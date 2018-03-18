@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1caef84c787fa24ba709b1de47acea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Xsize: 5
-  Ysize: 100
-  Zsize: 5
+  Xsize: 10
+  Ysize: 10
+  Zsize: 10
+  ObjectCount: 0

@@ -9,23 +9,32 @@ public class Board : MonoBehaviour {
 	public int Zsize = 4;
 	//List<List<Block>> map;
 	Block[, , ] map;
-	void Awake () {
-		// map = new List<List<Block>>(25);
+	public int ObjectCount = 0;
+	void Awake() {
+		ObjectCount = 0;
 		map = new Block[Xsize, Ysize, Zsize];
-		//map.Capacity = 25;
-		int c = 0;
+
+		//creates copies of result, thus avoiding calculations
+		Block block = new Block();
+		block.PopulateMeshData();
+
 		for (int z = 0; z < Zsize; z++) {
 			for (int y = 0; y < Ysize; y++) {
 				for (int x = 0; x < Xsize; x++) {
-					map[x, y, z] = new Block();//(Block) ScriptableObject.CreateInstance (typeof (Block));
-					c++;
+					map[x, y, z] = new Block(block);
+					ObjectCount++;
 				}
 			}
 		}
-		Debug.LogFormat ("Mapa ma {0} obiektów", c);
+		//shallow copy test
+/*
+		Vector3[] t = block.GetDrawData().vertices;
+		t[2] = new Vector3(2,2,2);
+		block.GetDrawData().vertices = t;
+		*/
 	}
 
-	public Block[,,] GetMapArray () {
+	public Block[, , ] GetMapArray() {
 		return map;
 	}
 

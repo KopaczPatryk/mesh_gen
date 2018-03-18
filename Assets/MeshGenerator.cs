@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 // [RequireComponent(typeof(MeshFilter))]
@@ -30,8 +31,11 @@ public class MeshGenerator : MonoBehaviour {
 //		print("tris1: " + trianglesCount);
 
 		Vector3[] verts = new Vector3[vertCount];
-		Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
+        UnityEngine.Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
 		int[] tris = new int[trianglesCount];
+
+		Stopwatch sw = new Stopwatch();
+		sw.Start();
 
 		int vCount = 0;
 		int tCount = 0;
@@ -45,17 +49,28 @@ public class MeshGenerator : MonoBehaviour {
 					for (int offset = 0; offset < tmesh.vertices.Length; offset++) {
 						verts[vCount + offset] = tmesh.vertices[offset] + new Vector3(x, y, z);
 					}
-					vCount += tmesh.vertexCount;
 
 					for (int i = 0; i < tmesh.triangles.Length; i++) {
-						tris[tCount + i] = tmesh.triangles[i] + tCount;
+						tris[tCount + i] = tmesh.triangles[i] + vCount;
 					}
+					vCount += tmesh.vertexCount;
 					tCount += tmesh.triangles.Length;
 				}
 			}
 		}
+		sw.Stop();
+		UnityEngine.Debug.LogFormat(
+			"Generation took: {0}ms for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
+			 sw.ElapsedMilliseconds,
+			 vertCount,
+			 trianglesCount,
+			 board.ObjectCount,
+			 sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / board.ObjectCount
+			 );
+
 		meshFilter.mesh.vertices = verts;
 		meshFilter.mesh.triangles = tris;
+		meshFilter.mesh.RecalculateNormals();
 	}
 	private T printFallThrough<T>(string msg, T obj) {
 		//print(msg + obj.ToString());
