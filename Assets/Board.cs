@@ -15,27 +15,20 @@ public class Board : MonoBehaviour {
 		map = new Block[Xsize, Ysize, Zsize];
 
 		//creates copies of result, thus avoiding calculations
-		Block block = new Block();
-		block.PopulateMeshData();
+		//Dirt block = new Dirt();
+		//block.PopulateMeshData();
 
 		for (int z = 0; z < Zsize; z++) {
 			for (int y = 0; y < Ysize; y++) {
 				for (int x = 0; x < Xsize; x++) {
-					map[x, y, z] = new Block(block);
+					map[x, y, z] = new Dirt();
 					ObjectCount++;
 				}
 			}
 		}
-		//shallow copy test
-/*
-		Vector3[] t = block.GetDrawData().vertices;
-		t[2] = new Vector3(2,2,2);
-		block.GetDrawData().vertices = t;
-		*/
 	}
 
 	public Block[, , ] GetMapArray() {
 		return map;
 	}
-
 }

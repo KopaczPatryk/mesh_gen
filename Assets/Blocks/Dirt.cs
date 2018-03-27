@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : System.Object {
-	protected const float scale = 1;
+public class Dirt : Block {
+	//protected const float scale = 1;
 	//protected const int vertCount = 6;
-	Mesh mesh;
-	public readonly int VertexCount;
-	public readonly int Indices;
-	protected bool built = false;
-	public Block() {
+	//Mesh mesh;
+	public Dirt() {
+		Transparent = false;
+		Built = false;
 		VertexCount = 24;
 		Indices = 36;
 	}
-	public Block(Block toClone) {
+	public Dirt(Dirt toClone) {
+		Transparent = false;
 		Indices = toClone.Indices;
 		VertexCount = toClone.VertexCount;
 		mesh = toClone.mesh;
-		built = true;
+		Built = true;
 	}
-	public void PopulateMeshData() {
-		if (!built) {
+	public override void PopulateMeshData() {
+		if (!Built) {
 			mesh = new Mesh();
 			//uvs
 			Vector2[] uvs = new Vector2[VertexCount];
@@ -145,10 +145,10 @@ public class Block : System.Object {
 			mesh.vertices = verts;
 			mesh.uv = uvs;
 			mesh.triangles = tri;
-			built = true;
+			Built = true;
 		}
 	}
-	public Mesh GetDrawData() {
+	public override Mesh GetDrawData() {
 		//mesh = new Mesh();
 		PopulateMeshData();
 		return mesh;
