@@ -50,10 +50,11 @@ public class MeshGenerator : MonoBehaviour {
 					//offset is used to loop over verices and triangles
 					for (int offset = 0; offset < tmesh.vertices.Length; offset++) {
 						verts[vCount + offset] = tmesh.vertices[offset] + new Vector3(x, y, z);
-						uvs[uCount + offset] = tmesh.uv[offset];
+						
 					}
-					for (int i = 0; i < tmesh.vertices.Length; i++)
+					for (int i = 0; i < block.UvCount; i++)
 					{
+						uvs[uCount + i] = tmesh.uv[i];
 					}
 
 					for (int i = 0; i < tmesh.triangles.Length; i++) {

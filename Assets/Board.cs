@@ -21,7 +21,16 @@ public class Board : MonoBehaviour {
 		for (int z = 0; z < Zsize; z++) {
 			for (int y = 0; y < Ysize; y++) {
 				for (int x = 0; x < Xsize; x++) {
-					map[x, y, z] = new Dirt();
+					// if (x % 2 == 0)
+					// {
+					// 	map[x, y, z] = new Blocks.Space();
+					// }
+					// else
+					// {
+					// 	map[x, y, z] = new Dirt();
+					// }
+						map[x, y, z] = new Dirt();
+					
 					ObjectCount++;
 				}
 			}

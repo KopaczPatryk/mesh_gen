@@ -10,6 +10,7 @@ public class Dirt : Block {
 		Transparent = false;
 		Built = false;
 		VertexCount = 24;
+		UvCount = VertexCount;
 		Indices = 36;
 	}
 	public Dirt(Dirt toClone) {

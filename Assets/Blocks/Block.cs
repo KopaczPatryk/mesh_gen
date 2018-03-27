@@ -1,18 +1,19 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Block : System.Object {
 	protected const float scale = 1;
 
 	[SerializeField]
-	protected int VertexCount;
-
+	public int VertexCount {get; protected set;}
 	[SerializeField]	
-	protected int Indices;
+	public int UvCount {get; protected set; }
+	[SerializeField]	
+	public int Indices {get; protected set;}
 	protected bool Built = false;
-	protected Mesh mesh;
-	protected bool Transparent = false;
 
+	//to change in the future, currently it allocates obsolete memory
+	protected Mesh mesh; 
+	protected bool Transparent = false;
 	public abstract void PopulateMeshData();
 	public abstract Mesh GetDrawData();
 }
