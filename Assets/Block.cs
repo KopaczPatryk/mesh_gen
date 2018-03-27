@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Block : System.Object {
-	protected const float scale = 0.8f;
+	protected const float scale = 1;
 	//protected const int vertCount = 6;
 	Mesh mesh;
 	public readonly int VertexCount;
@@ -22,6 +22,21 @@ public class Block : System.Object {
 	public void PopulateMeshData() {
 		if (!built) {
 			mesh = new Mesh();
+			//uvs
+			Vector2[] uvs = new Vector2[VertexCount];
+			// for (int i = 0; i < VertexCount; i++)
+			// {
+			// 	uvs[i] = new Vector2(0,0);
+			// }
+
+			for (int i = 0; i < 6 * 4; i+=4)
+			{
+				uvs[i + 0] = new Vector2(0,1);
+				uvs[i + 1] = new Vector2(0,0);
+				uvs[i + 2] = new Vector2(1,0);
+				uvs[i + 3] = new Vector2(1,1);
+			}
+
 			/****************VERICES************** */
 			Vector3[] verts = new Vector3[VertexCount];
 			//front
@@ -29,7 +44,7 @@ public class Block : System.Object {
 			verts[1] = new Vector3(0, 0, 0);
 			verts[2] = new Vector3(1, 0, 0);
 			verts[3] = new Vector3(1, 1, 0);
-			
+
 			//back
 			verts[4] = new Vector3(0,1,1);
 			verts[5] = new Vector3(0,0,1);
@@ -111,10 +126,24 @@ public class Block : System.Object {
 			tri[34] = 20 + 3;
 			tri[35] = 20 + 0;
 
+			/*Vector2[] uvs = new Vector2[VertexCount];
+			int offset = 0;
+			for (int i = 0; i < 6; i++)
+			{
+
+				offset += 4;
+			}*/
+			/*for (int i = 0; i < VertexCount; i++)
+			{
+				uvs[i] = new Vector2(0.5f, 0.5f);
+			}*/
+
+
 			for (int i = 0; i < VertexCount; i++) {
 				verts[i] *= scale; // new Vector3(.5f, .5f, .5f);
 			}
 			mesh.vertices = verts;
+			mesh.uv = uvs;
 			mesh.triangles = tri;
 			built = true;
 		}

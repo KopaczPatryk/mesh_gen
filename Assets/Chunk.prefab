@@ -23,12 +23,13 @@ GameObject:
   - component: {fileID: 114277147507101540}
   - component: {fileID: 23097424472876558}
   - component: {fileID: 114876669664986790}
+  - component: {fileID: 64447417639130888}
   m_Layer: 0
   m_Name: Chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4615775183996822
 Transform:
@@ -57,7 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0736b27937dce874e85054be1e26c622, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,6 +85,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1058733900000268}
   m_Mesh: {fileID: 0}
+--- !u!64 &64447417639130888
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058733900000268}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 0}
 --- !u!114 &114277147507101540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1caef84c787fa24ba709b1de47acea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Xsize: 10
-  Ysize: 10
-  Zsize: 10
+  Xsize: 13
+  Ysize: 13
+  Zsize: 13
   ObjectCount: 0

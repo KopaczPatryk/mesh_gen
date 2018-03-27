@@ -31,6 +31,7 @@ public class MeshGenerator : MonoBehaviour {
 //		print("tris1: " + trianglesCount);
 
 		Vector3[] verts = new Vector3[vertCount];
+		Vector2[] uvs = new Vector2[vertCount];
         UnityEngine.Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
 		int[] tris = new int[trianglesCount];
 
@@ -38,6 +39,7 @@ public class MeshGenerator : MonoBehaviour {
 		sw.Start();
 
 		int vCount = 0;
+		int uCount = 0;
 		int tCount = 0;
 
 		for (int z = 0; z < board.Zsize; z++) {
@@ -48,12 +50,17 @@ public class MeshGenerator : MonoBehaviour {
 					//offset is used to loop over verices and triangles
 					for (int offset = 0; offset < tmesh.vertices.Length; offset++) {
 						verts[vCount + offset] = tmesh.vertices[offset] + new Vector3(x, y, z);
+						uvs[uCount + offset] = tmesh.uv[offset];
+					}
+					for (int i = 0; i < tmesh.vertices.Length; i++)
+					{
 					}
 
 					for (int i = 0; i < tmesh.triangles.Length; i++) {
 						tris[tCount + i] = tmesh.triangles[i] + vCount;
 					}
 					vCount += tmesh.vertexCount;
+					uCount += tmesh.vertexCount;
 					tCount += tmesh.triangles.Length;
 				}
 			}
@@ -69,8 +76,10 @@ public class MeshGenerator : MonoBehaviour {
 			 );
 
 		meshFilter.mesh.vertices = verts;
-		meshFilter.mesh.triangles = tris;
+		meshFilter.mesh.uv = uvs;
+		meshFilter.mesh.triangles = tris;		
 		meshFilter.mesh.RecalculateNormals();
+		GetComponent<MeshCollider>().sharedMesh = meshFilter.mesh;
 	}
 	private T printFallThrough<T>(string msg, T obj) {
 		//print(msg + obj.ToString());
