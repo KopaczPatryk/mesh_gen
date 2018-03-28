@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Kopacz.Unity.MeshGen.World {
-    enum Side {
+    public enum Side {
         Front,
         Left,
         Back,
-        Right
+        Right,
+        Top,
+        Bottom
     }
 }

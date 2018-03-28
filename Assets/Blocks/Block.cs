@@ -13,7 +13,7 @@ public abstract class Block : System.Object {
 
 	//to change in the future, currently it allocates obsolete memory
 	protected Mesh mesh; 
-	protected bool Transparent = false;
+	public bool Transparent {get; protected set;}
 	public abstract void PopulateMeshData();
 	public abstract Mesh GetDrawData();
 }
