@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 
 // [RequireComponent(typeof(MeshFilter))]
@@ -27,12 +28,12 @@ public class MeshGenerator : MonoBehaviour {
 			}
 		}
 
-//		print("verts1: " + vertCount);
-//		print("tris1: " + trianglesCount);
+		//		print("verts1: " + vertCount);
+		//		print("tris1: " + trianglesCount);
 
 		Vector3[] verts = new Vector3[vertCount];
 		Vector2[] uvs = new Vector2[vertCount];
-        UnityEngine.Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
+		UnityEngine.Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
 		int[] tris = new int[trianglesCount];
 
 		Stopwatch sw = new Stopwatch();
@@ -41,7 +42,35 @@ public class MeshGenerator : MonoBehaviour {
 		int vCount = 0;
 		int uCount = 0;
 		int tCount = 0;
+		int currentObjectCount = 0;
+		bool[] partiallyVisible = new bool[board.ObjectCount]; 
 
+		//render visible
+		/*for (int z = 0; z < board.Zsize; z++) {
+			for (int y = 0; y < board.Ysize; y++) {
+				for (int x = 0; x < board.Xsize; x++) { 
+					//Block block = board.GetMapArray() [x, y, z];
+					//Mesh tmesh = block.GetDrawData();
+					int sc = 0; // sidecount
+
+					Block tblock = board.GetMapArray()[x,y,z - 1];
+					if (tblock != null)
+					{
+						//delegate query to manager
+					}
+					//front
+					if (board.GetMapArray()[x,y,z - 1].Transparent)
+					{
+						
+					}
+
+
+					currentObjectCount++;		
+				}
+			}
+		}*/
+		//render all
+		
 		for (int z = 0; z < board.Zsize; z++) {
 			for (int y = 0; y < board.Ysize; y++) {
 				for (int x = 0; x < board.Xsize; x++) {
@@ -50,7 +79,6 @@ public class MeshGenerator : MonoBehaviour {
 					//offset is used to loop over verices and triangles
 					for (int offset = 0; offset < tmesh.vertices.Length; offset++) {
 						verts[vCount + offset] = tmesh.vertices[offset] + new Vector3(x, y, z);
-						
 					}
 					for (int i = 0; i < block.UvCount; i++)
 					{
@@ -65,20 +93,21 @@ public class MeshGenerator : MonoBehaviour {
 					tCount += tmesh.triangles.Length;
 				}
 			}
-		}
+		} 
+		
 		sw.Stop();
 		UnityEngine.Debug.LogFormat(
 			"Generation took: {0}ms for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
-			 sw.ElapsedMilliseconds,
-			 vertCount,
-			 trianglesCount,
-			 board.ObjectCount,
-			 sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / board.ObjectCount
-			 );
+			sw.ElapsedMilliseconds,
+			vertCount,
+			trianglesCount,
+			board.ObjectCount,
+			sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / board.ObjectCount
+		);
 
 		meshFilter.mesh.vertices = verts;
 		meshFilter.mesh.uv = uvs;
-		meshFilter.mesh.triangles = tris;		
+		meshFilter.mesh.triangles = tris;
 		meshFilter.mesh.RecalculateNormals();
 		GetComponent<MeshCollider>().sharedMesh = meshFilter.mesh;
 	}
