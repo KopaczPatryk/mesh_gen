@@ -10,6 +10,14 @@ public class MeshGenerator : MonoBehaviour {
 	public Board board;
 	MeshFilter meshFilter;
 
+	//generator
+	Vector3[] verts;
+	Vector2[] uvs;
+	int[] tris;
+	int vCount = 0;
+	int uCount = 0;
+	int tCount = 0;
+
 	void Awake() {
 		meshFilter = GetComponent<MeshFilter>();
 	}
@@ -31,17 +39,16 @@ public class MeshGenerator : MonoBehaviour {
 		//		print("verts1: " + vertCount);
 		//		print("tris1: " + trianglesCount);
 
-		Vector3[] verts = new Vector3[vertCount];
-		Vector2[] uvs = new Vector2[vertCount];
+		verts = new Vector3[vertCount];
+		uvs = new Vector2[vertCount];
 		UnityEngine.Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
-		int[] tris = new int[trianglesCount];
+		tris = new int[trianglesCount];
 
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
 
 		//render visible
-		//int currentObjectCount = 0;
-		bool[] partiallyVisible = new bool[board.ObjectCount];
+
 		Block[, , ] map = board.GetMapArray();
 
 		List<Vector3Int> renderLayer = new List<Vector3Int>();
@@ -56,45 +63,147 @@ public class MeshGenerator : MonoBehaviour {
 					//to right
 					//above
 					//deeper - to front
-					Block tblock = map[x, y, z];
+					//Block tblock = map[x, y, z];
 
-					if (tblock != null) {
-						try
-						{
-                                //UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
-							if (map[pos.x + 1, pos.y, pos.z].Transparent ||
-								map[pos.x - 1, pos.y, pos.z].Transparent ||
-								map[pos.x, pos.y + 1, pos.z].Transparent ||
-								map[pos.x, pos.y - 1, pos.z].Transparent ||
-								map[pos.x, pos.y, pos.z + 1].Transparent ||
-								map[pos.x, pos.y, pos.z - 1].Transparent
-							) {
-                                //UnityEngine.Debug.LogFormat("in if {0} {1} {2}", x,y,z);
-								renderLayer.Add(new Vector3Int(x, y, z));
-							}
-						}
-						catch (IndexOutOfRangeException) //assume neighboring chunks are all transparent
-						{
+					//if (tblock != null) {
+					try {
+						//UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
+						if (map[pos.x + 1, pos.y, pos.z].Transparent ||
+							map[pos.x - 1, pos.y, pos.z].Transparent ||
+							map[pos.x, pos.y + 1, pos.z].Transparent ||
+							map[pos.x, pos.y - 1, pos.z].Transparent ||
+							map[pos.x, pos.y, pos.z + 1].Transparent ||
+							map[pos.x, pos.y, pos.z - 1].Transparent
+						) {
+							//UnityEngine.Debug.LogFormat("in if {0} {1} {2}", x,y,z);
 							renderLayer.Add(new Vector3Int(x, y, z));
-							//print(e.Message);
 						}
-						
+					} catch (IndexOutOfRangeException) //assume neighboring chunks are all transparent
+					{
+						renderLayer.Add(new Vector3Int(x, y, z));
+						//print(e.Message);
 					}
+
+					//}
 				}
 			}
 		}
-		int vCount = 0;
-		int uCount = 0;
-		int tCount = 0;
+		vCount = 0;
+		uCount = 0;
+		tCount = 0;
 		for (int a = 0; a < renderLayer.Count; a++) {
+
 			int x = renderLayer[a].x;
 			int y = renderLayer[a].y;
 			int z = renderLayer[a].z;
 
 			Block block = map[x, y, z];
 			Mesh tmesh = block.GetDrawData();
+
+			//int sideCount = block.Sides;
+			int VertexCount = block.VertexCount / 6;
+			int IndicesCount = block.Indices / 6;
+			int UvCount = block.UvCount / 6;
+
+			//vertex
+			/*for (int offset = 0; offset < VertexCount; offset++) {
+				verts[vCount + offset] = tmesh.vertices[block.FrontFaceOrder * VertexCount + offset] + new Vector3(x, y, z);
+				//verts[vCount + offset] = tmesh.vertices[block.FrontFaceOrder * VertexCount + offset];
+			}
+			//triangle
+			for (int offset = 0; offset < IndicesCount; offset++) {
+				tris[tCount + offset] = tmesh.triangles[block.FrontFaceOrder * IndicesCount + offset] + vCount;
+			}
+			//uvs
+			//todo doesnt support multiple face textures
+			for (int offset = 0; offset < UvCount; offset++) {
+				uvs[uCount + offset] = tmesh.uv[block.FrontFaceOrder * UvCount + offset];
+			}
+
+			vCount += VertexCount;
+			uCount += UvCount;
+			tCount += IndicesCount;*/
+
+			//AppendFace(block, Face.Front, x, y, z);					
+
+			//front
+			try {
+				if (map[x, y, z - 1].Transparent) {
+					AppendFace(block, Face.Front, x, y, z);
+				}
+			} catch (IndexOutOfRangeException) {
+				AppendFace(block, Face.Front, x, y, z);
+				//print("f");
+			}
+			//back
+			/*try {
+				if (map[x, y, z - 1].Transparent) {
+					AppendFace(block, Face.Back, x, y, z);
+				}
+			} catch (IndexOutOfRangeException) {
+				AppendFace(block, Face.Back, x, y, z);
+				//print("b");
+
+			} finally { }*/
+
+			//right
+			/*try {
+				if (map[x + 1, y, z].Transparent) {
+					AppendFace(block, Face.Right);
+				}
+			} catch (IndexOutOfRangeException) {
+print("r");
+
+			} finally {
+				AppendFace(block, Face.Right);
+
+			}
+			//left
+			try {
+				if (map[x - 1, y, z].Transparent) {
+					AppendFace(block, Face.Left);
+				}
+			} catch (IndexOutOfRangeException) {
+print("l");
+
+			} finally {
+				AppendFace(block, Face.Left);
+			}
+			
+			//top
+			try {
+				if (map[x, y + 1, z].Transparent) {
+					AppendFace(block, Face.Top);
+				}
+			} catch (IndexOutOfRangeException) {
+print("t");
+
+			} finally {
+				AppendFace(block, Face.Top);
+			}
+			
+			//bottom
+			try {
+				if (map[x, y - 1, z].Transparent) {
+					AppendFace(block, Face.Bottom);
+				}
+			} catch (IndexOutOfRangeException) {
+print("bo");
+
+			} finally {
+				AppendFace(block, Face.Bottom);
+			}*/
+
+			//works but renrders whole blocks
+			// map[pos.x + 1, pos.y, pos.z].Transparent ||
+			// map[pos.x - 1, pos.y, pos.z].Transparent ||
+			// map[pos.x, pos.y + 1, pos.z].Transparent ||
+			// map[pos.x, pos.y - 1, pos.z].Transparent ||
+			// map[pos.x, pos.y, pos.z + 1].Transparent ||
+			// map[pos.x, pos.y, pos.z - 1].Transparent
+
 			//offset is used to loop over verices and triangles
-			for (int offset = 0; offset < tmesh.vertices.Length; offset++) {
+			/*for (int offset = 0; offset < tmesh.vertices.Length; offset++) {
 				verts[vCount + offset] = tmesh.vertices[offset] + new Vector3(x, y, z);
 			}
 			for (int i = 0; i < block.UvCount; i++) {
@@ -106,7 +215,7 @@ public class MeshGenerator : MonoBehaviour {
 			}
 			vCount += tmesh.vertexCount;
 			uCount += tmesh.vertexCount;
-			tCount += tmesh.triangles.Length;
+			tCount += tmesh.triangles.Length;*/
 		}
 
 		/*for (int z = 0; z < board.Zsize; z++) {
@@ -166,6 +275,53 @@ public class MeshGenerator : MonoBehaviour {
 	private T printFallThrough<T>(string msg, T obj) {
 		//print(msg + obj.ToString());
 		return obj;
+	}
+	private void AppendFace(Block block, Face face, int xpos, int ypos, int zpos) {
+		Mesh tmesh = block.GetDrawData();
+		int faceOrder = 0;
+
+		switch (face) {
+			case Face.Front:
+				faceOrder = block.FrontFaceOrder;
+				break;
+			case Face.Back:
+				faceOrder = block.BackFaceOrder;
+				break;
+			case Face.Right:
+				faceOrder = block.RightFaceOrder;
+				break;
+			case Face.Left:
+				faceOrder = block.LeftFaceOrder;
+				break;
+			case Face.Top:
+				faceOrder = block.TopFaceOrder;
+				break;
+			case Face.Bottom:
+				faceOrder = block.BottomFaceOrder;
+				break;
+		}
+
+		//int sideCount = block.Sides;
+		int faceVertexCount = block.VertexCount / 6;
+		int faceIndicesCount = block.Indices / 6;
+		int faceUvCount = block.UvCount / 6;
+
+		for (int offset = 0; offset < faceVertexCount; offset++) {
+			verts[vCount + offset] = tmesh.vertices[faceOrder * faceVertexCount + offset] + new Vector3(xpos, ypos, zpos);
+		}
+		//triangle
+		for (int offset = 0; offset < faceIndicesCount; offset++) {
+			tris[tCount + offset] = tmesh.triangles[faceOrder * faceIndicesCount + offset] + vCount;
+		}
+		//uvs
+		//todo doesnt support multiple face textures
+		for (int offset = 0; offset < faceUvCount; offset++) {
+			uvs[uCount + offset] = tmesh.uv[faceOrder * faceUvCount + offset];
+		}
+
+		vCount += faceVertexCount;
+		uCount += faceUvCount;
+		tCount += faceIndicesCount;
 	}
 }
 /*public static class VectorExtensions {

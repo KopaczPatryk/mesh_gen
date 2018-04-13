@@ -1,8 +1,6 @@
 using UnityEngine;
-namespace Blocks
-{
-    public class Space : Block
-    {
+namespace Blocks {
+    public class Space : Block {
         public Space() {
             VertexCount = 0;
             UvCount = 0;
@@ -10,6 +8,7 @@ namespace Blocks
             Built = true;
             Transparent = true;
         }
+
         public override Mesh GetDrawData()
         {
             return new Mesh();
@@ -17,7 +16,7 @@ namespace Blocks
 
         public override void PopulateMeshData()
         {
-            
+            throw new System.NotImplementedException();
         }
     }
 }

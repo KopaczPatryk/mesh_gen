@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dirt : Block {
+public class Dirt2 : Block {
 	public override int FrontFaceOrder { get { return 0; } }
 
 	public override int BackFaceOrder { get { return 1; } }
@@ -19,14 +19,14 @@ public class Dirt : Block {
 	//protected const int vertCount = 6;
 	//Mesh mesh;
 
-	public Dirt() {
+	public Dirt2() {
 		Transparent = false;
 		Built = false;
 		VertexCount = 24;
 		UvCount = VertexCount;
 		Indices = 36;
 	}
-	public Dirt(Dirt toClone) {
+	public Dirt2(Dirt2 toClone) {
 		Transparent = false;
 		Indices = toClone.Indices;
 		VertexCount = toClone.VertexCount;
