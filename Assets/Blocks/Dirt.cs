@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Dirt : Block {
+	public override int Sides {get {return 6;}}
 	public override int FrontFaceOrder { get { return 0; } }
 
 	public override int BackFaceOrder { get { return 1; } }
@@ -43,7 +44,7 @@ public class Dirt : Block {
 			// 	uvs[i] = new Vector2(0,0);
 			// }
 
-			for (int i = 0; i < 6 * 4; i += 4) {
+			for (int i = 0; i < Sides * 4; i += 4) {
 				uvs[i + 0] = new Vector2(0, 1);
 				uvs[i + 1] = new Vector2(0, 0);
 				uvs[i + 2] = new Vector2(1, 0);

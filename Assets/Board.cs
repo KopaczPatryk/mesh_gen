@@ -7,29 +7,35 @@ public class Board : MonoBehaviour {
 	public int Xsize = 4;
 	public int Ysize = 4;
 	public int Zsize = 4;
-	//List<List<Block>> map;
 	Block[, , ] map;
 	public int ObjectCount = 0;
 	void Awake() {
 		ObjectCount = 0;
 		map = new Block[Xsize, Ysize, Zsize];
 
-		//creates copies of result, thus avoiding calculations
-		//Dirt block = new Dirt();
-		//block.PopulateMeshData();
-
 		for (int z = 0; z < Zsize; z++) {
 			for (int y = 0; y < Ysize; y++) {
 				for (int x = 0; x < Xsize; x++) {
-					if (x % 4 != 0 && y % 4 != 0 && z % 4 != 0)
-					{
-						map[x, y, z] = new Dirt();
-					}
-					else
-					{
-						map[x, y, z] = new Blocks.Space();						
-					}
-					// map[x, y, z] = new Dirt();
+					// multiple smaller cubes in chunks
+					// if (x % 4 != 0 && y % 4 != 0 && z % 4 != 0)
+					// {
+					// 	map[x, y, z] = new Dirt();
+					// }
+					// else
+					// {
+					// 	map[x, y, z] = new Blocks.Space();						
+					// }
+
+					// if (ObjectCount % 2 == 0)
+					// {
+					// 	map[x, y, z] = new Dirt();
+					// }
+					// else
+					// {
+					// 	map[x, y, z] = new Blocks.Space();						
+					// }
+
+					map[x, y, z] = new Dirt();
 					
 					ObjectCount++;
 				}

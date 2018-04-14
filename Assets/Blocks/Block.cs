@@ -17,7 +17,7 @@ public abstract class Block : System.Object {
 	public abstract void PopulateMeshData();
 	public abstract Mesh GetDrawData();
 
-	public virtual int Sides {get {return 6;}}
+	public virtual int Sides {get {return 0;}}
 	public virtual int FrontFaceOrder {get{return 0;}}
 	public virtual int BackFaceOrder {get{return 0;}}
 	public virtual int RightFaceOrder {get{return 0;}}
