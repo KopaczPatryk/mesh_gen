@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using MeshGen.WorldGen;
 using UnityEngine;
 
-public class Board : MonoBehaviour {
+public class Chunk : MonoBehaviour {
 	public int Xsize = 4;
 	public int Ysize = 4;
 	public int Zsize = 4;

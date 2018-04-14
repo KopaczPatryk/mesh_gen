@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace MeshGen {
 	public class MeshGenerator : MonoBehaviour {
-		public Board board;
+		public Chunk board;
 		MeshFilter meshFilter;
 
 		//generator
