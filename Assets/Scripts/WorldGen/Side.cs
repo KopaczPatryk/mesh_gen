@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Kopacz.Unity.MeshGen.World {
+namespace MeshGen {
     public enum Side {
         Front,
-        Left,
         Back,
         Right,
+        Left,
         Top,
         Bottom
     }
