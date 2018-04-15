@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4615775183996822}
   - component: {fileID: 33958715824968308}
-  - component: {fileID: 114277147507101540}
   - component: {fileID: 23097424472876558}
-  - component: {fileID: 114876669664986790}
   - component: {fileID: 64447417639130888}
+  - component: {fileID: 114826888044472336}
+  - component: {fileID: 114277147507101540}
   m_Layer: 0
   m_Name: Chunk
   m_TagString: Untagged
@@ -110,8 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d140548fa2c5084b8fa067c399e2b16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 114876669664986790}
---- !u!114 &114876669664986790
+--- !u!114 &114826888044472336
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -122,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1caef84c787fa24ba709b1de47acea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Xsize: 13
-  Ysize: 13
-  Zsize: 13
+  Xsize: 4
+  Ysize: 4
+  Zsize: 4
   ObjectCount: 0

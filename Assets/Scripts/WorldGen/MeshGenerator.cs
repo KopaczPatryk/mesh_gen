@@ -7,9 +7,11 @@ using MeshGen.WorldGen;
 using UnityEngine;
 
 namespace MeshGen {
+	[RequireComponent(typeof(Chunk))]
+	//[RequireComponent(typeof())]
 	public class MeshGenerator : MonoBehaviour {
-		public Chunk board;
-		MeshFilter meshFilter;
+		private Chunk chunkData;
+		private MeshFilter meshFilter;
 
 		//generator
 		Vector3[] verts;
@@ -21,15 +23,18 @@ namespace MeshGen {
 
 		void Awake() {
 			meshFilter = GetComponent<MeshFilter>();
+			chunkData = GetComponent<Chunk>();
 		}
-
-		void Start() {
+		void Start(){
+			//GenerateMesh();
+		}
+		public void GenerateMesh() {
 			int vertCount = 0;
 			int trianglesCount = 0;
-			for (int z = 0; z < board.Zsize; z++) {
-				for (int y = 0; y < board.Ysize; y++) {
-					for (int x = 0; x < board.Xsize; x++) {
-						Block block = board.GetMapArray() [x, y, z];
+			for (int z = 0; z < chunkData.Zsize; z++) {
+				for (int y = 0; y < chunkData.Ysize; y++) {
+					for (int x = 0; x < chunkData.Xsize; x++) {
+						Block block = chunkData.GetMapArray() [x, y, z];
 
 						vertCount += block.GetDrawData().vertexCount;
 						trianglesCount += block.GetDrawData().triangles.Length;
@@ -53,14 +58,14 @@ namespace MeshGen {
 
 			//render visible blocks
 
-			Block[, , ] map = board.GetMapArray();
+			Block[, , ] map = chunkData.GetMapArray();
 
 			List<Vector3> renderLayer = new List<Vector3>();
 
 			//find visible blocks
-			for (int z = 0; z < board.Zsize; z++) {
-				for (int y = 0; y < board.Ysize; y++) {
-					for (int x = 0; x < board.Xsize; x++) {
+			for (int z = 0; z < chunkData.Zsize; z++) {
+				for (int y = 0; y < chunkData.Ysize; y++) {
+					for (int x = 0; x < chunkData.Xsize; x++) {
 						Vector3 pos = new Vector3(x, y, z);
 						try {
 							//UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
@@ -196,8 +201,8 @@ namespace MeshGen {
 				sw.ElapsedMilliseconds,
 				vertCount,
 				trianglesCount,
-				board.ObjectCount,
-				sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / board.ObjectCount
+				chunkData.ObjectCount,
+				sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkData.ObjectCount
 			);
 
 			meshFilter.mesh.vertices = verts;
