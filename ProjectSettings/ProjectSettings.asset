@@ -632,7 +632,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 3
+  apiCompatibilityLevel: 2
   cloudProjectId: 4853afed-dd3b-4cf3-90a3-4c009127f2a6
   projectName: MeshGen
   organizationId: softkopacza
