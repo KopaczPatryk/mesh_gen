@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23799521518530788}
   - component: {fileID: 114497452802458412}
   - component: {fileID: 54073199778337390}
-  - component: {fileID: 65805714289407130}
+  - component: {fileID: 136065996220664528}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -55,8 +55,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1013257577937720}
-  m_LocalRotation: {x: -0, y: -0.19979584, z: -0, w: -0.9798376}
-  m_LocalPosition: {x: 32.266697, y: 12.999998, z: 15.812827}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.399, y: 17.177076, z: 11.192}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4261156655196384}
@@ -168,18 +168,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &65805714289407130
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1013257577937720}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!81 &81038194650856760
 AudioListener:
   m_ObjectHideFlags: 1
@@ -198,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cbfb59ce8e20ef4c8733e3ff4261dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpforce: 2
+  jumpforce: 1
   walkSpeed: 0.5
 --- !u!124 &124786409692085572
 Behaviour:
@@ -207,3 +195,16 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1252247378014866}
   m_Enabled: 1
+--- !u!136 &136065996220664528
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1013257577937720}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

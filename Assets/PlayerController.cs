@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void Awake()
 	{
+		Cursor.lockState = CursorLockMode.Locked;
 		viewport = GetComponentInChildren<Camera>();
 		rb = GetComponent<Rigidbody>();
 		//controller = GetComponent<CharacterController>();
