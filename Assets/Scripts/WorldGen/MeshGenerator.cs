@@ -201,8 +201,8 @@ namespace MeshGen {
 				sw.ElapsedMilliseconds,
 				vertCount,
 				trianglesCount,
-				chunkData.ObjectCount,
-				sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkData.ObjectCount
+				chunkData.map.Length,
+				sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkData.map.Length
 			);
 
 			meshFilter.mesh.vertices = verts;

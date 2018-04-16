@@ -20,9 +20,9 @@ public class Chunk : MonoBehaviour {
 		Zsize = value;
 		chunkSize = value;
 	}}
-	Block[, , ] map;
-	public int ObjectCount = 0;
-	void Awake() {
+	public Block[, , ] map {get; protected set;}
+	//public int ObjectCount = 0;
+	/*void Awake() {
 		Xsize = chunkSize;
 		Ysize = chunkSize;
 		Zsize = chunkSize;
@@ -58,8 +58,10 @@ public class Chunk : MonoBehaviour {
 				}
 			}
 		}
+	}*/
+	public void SetMap (Block[,,] chunkMap) {
+		map = chunkMap;
 	}
-
     public Block[, , ] GetMapArray() {
 		return map;
 	}

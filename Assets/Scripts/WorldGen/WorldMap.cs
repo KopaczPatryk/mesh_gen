@@ -4,10 +4,15 @@ using MeshGen;
 using UnityEngine;
 
 public class WorldMap : MonoBehaviour {
+	IMapProvider mainMap;
 	public GameObject ChunkPrefab;
 	public const int ChunkSize = 13;
 	public Dictionary<Vector3Int, Chunk> Chunks { get; set; }
-
+	
+	void Awake()
+	{
+		mainMap = InstanceFactory.GetInstance().GetMapProvider(); 
+	}
 	void Start() {
 		Chunks = new Dictionary<Vector3Int, Chunk>();
 		for (int x = 0; x < 4; x++)
@@ -22,17 +27,22 @@ public class WorldMap : MonoBehaviour {
 		//LoadChunk(new Vector3Int(2,1,2));
 	}
 	public void LoadChunk(Vector3Int pos) {
-		if (Chunks.ContainsKey(pos)) {
+		GameObject go = Instantiate(ChunkPrefab, pos * ChunkSize, transform.rotation);
 
+		if (Chunks.ContainsKey(pos)) { //get from recycled
+			Chunk tchunk = Chunks[pos];
+			//tchunk.ChunkSize = 13;
+			go.GetComponent<Chunk>().SetMap(tchunk.map);
 		}
 		else
 		{
-			GameObject go = Instantiate(ChunkPrefab, pos * ChunkSize, transform.rotation);
 			Chunk tchunk = go.GetComponent<Chunk>();
 			tchunk.ChunkSize = ChunkSize;
+			tchunk.SetMap(mainMap.GetChunk(pos, ChunkSize));
 			Chunks.Add(pos, tchunk);
-			go.GetComponent<MeshGenerator>().GenerateMesh();
 		}
+		go.GetComponent<MeshGenerator>().GenerateMesh();
+		
 	}
 
 	public enum Mode {
