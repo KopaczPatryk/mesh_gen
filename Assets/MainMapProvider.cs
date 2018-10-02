@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class MainMapProvider : IMapProvider {
 
-	private IMapDataSource savedMap;
-	private IMapDataSource mapGenerator;
-	public static IMapProvider instance;
+	private IMapProvider savedMap;
+	private IMapProvider mapGenerator;
+	private static IMapProvider instance;
 
 	public static IMapProvider GetInstance() {
 		instance = new MainMapProvider();
@@ -16,12 +16,17 @@ public class MainMapProvider : IMapProvider {
 
     public Block GetBlock(Vector3 posAbs)
     {
-        throw new System.NotImplementedException();
+        if (posAbs.y > 8)
+		{
+			return new MeshGen.WorldGen.Space();
+		}
+		else 
+			return new Dirt();
     }
 
-    public Block[,,] GetChunk(Vector3 chunkPos, int chunkSize)
+    public Chunk GetChunk(Vector3 posAbs, int chunkSize)
     {
-		Block[,,] tchunk = new Block[chunkSize,chunkSize,chunkSize];
+		Chunk chun = new Chunk(chunkSize);
 		int ObjectCount = 0;
 		for (int z = 0; z < chunkSize; z++) {
 			for (int y = 0; y < chunkSize; y++) {
@@ -29,11 +34,11 @@ public class MainMapProvider : IMapProvider {
 					//multiple smaller cubes in chunks
 					if (x % 4 != 0 && y % 4 != 0 && z % 4 != 0)
 					{
-						tchunk[x, y, z] = new Dirt();
+						chun.SetBlock(new Vector3Int(x,y,z), new Dirt());
 					}
 					else
 					{
-						tchunk[x, y, z] = new MeshGen.WorldGen.Space();						
+						chun.SetBlock(new Vector3Int(x,y,z), new MeshGen.WorldGen.Space());
 					}
 
 					// if (ObjectCount % 6 == 0)
@@ -51,6 +56,6 @@ public class MainMapProvider : IMapProvider {
 				}
 			}
 		}
-        return tchunk;
+        return chun;
     }
 }

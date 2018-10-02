@@ -6,7 +6,7 @@ using UnityEngine;
 public class WorldMap : MonoBehaviour {
 	IMapProvider mainMap;
 	public GameObject ChunkPrefab;
-	public const int ChunkSize = 13;
+	public const int ChunkSize = 8;
 	public Dictionary<Vector3Int, Chunk> Chunks { get; set; }
 	
 	void Awake()
@@ -26,13 +26,13 @@ public class WorldMap : MonoBehaviour {
 		//LoadChunk(new Vector3Int(2,1,1));
 		//LoadChunk(new Vector3Int(2,1,2));
 	}
-	public void LoadChunk(Vector3Int pos) {
+	private void LoadChunk(Vector3Int pos) {
 		GameObject go = Instantiate(ChunkPrefab, pos * ChunkSize, transform.rotation);
 
 		if (Chunks.ContainsKey(pos)) { //get from recycled
 			Chunk tchunk = Chunks[pos];
 			//tchunk.ChunkSize = 13;
-			go.GetComponent<Chunk>().SetMap(tchunk.map);
+			go.GetComponent<Chunk>().SetMap(tchunk.GetMapArray());
 		}
 		else
 		{
@@ -41,7 +41,7 @@ public class WorldMap : MonoBehaviour {
 			tchunk.SetMap(mainMap.GetChunk(pos, ChunkSize));
 			Chunks.Add(pos, tchunk);
 		}
-		go.GetComponent<MeshGenerator>().GenerateMesh();
+		go.GetComponent<ChunkMeshGenerator>().GenerateMesh();
 		
 	}
 

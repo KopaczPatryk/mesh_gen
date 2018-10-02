@@ -11,58 +11,40 @@ public class Chunk : MonoBehaviour {
 	public int Ysize = 4;
 	public int Zsize = 4;
 	private int chunkSize = 13;
-	public int ChunkSize { get {
-		return chunkSize;
-	}
-	set {
-		Xsize = value;
-		Ysize = value;
-		Zsize = value;
-		chunkSize = value;
-	}}
-	public Block[, , ] map {get; protected set;}
-	//public int ObjectCount = 0;
-	/*void Awake() {
-		Xsize = chunkSize;
-		Ysize = chunkSize;
-		Zsize = chunkSize;
-
-		ObjectCount = 0;
-		map = new Block[Xsize, Ysize, Zsize];
-
-		for (int z = 0; z < Zsize; z++) {
-			for (int y = 0; y < Ysize; y++) {
-				for (int x = 0; x < Xsize; x++) {
-					//multiple smaller cubes in chunks
-					if (x % 4 != 0 && y % 4 != 0 && z % 4 != 0)
-					{
-						map[x, y, z] = new Dirt();
-					}
-					else
-					{
-						map[x, y, z] = new MeshGen.WorldGen.Space();						
-					}
-
-					// if (ObjectCount % 2 == 0)
-					// {
-					// 	map[x, y, z] = new Dirt();
-					// }
-					// else
-					// {
-					// 	map[x, y, z] = new Blocks.Space();						
-					// }
-
-					//map[x, y, z] = new Dirt();
-
-					ObjectCount++;
-				}
-			}
+	public int ChunkSize {
+		get {
+			return chunkSize;
 		}
-	}*/
-	public void SetMap (Block[,,] chunkMap) {
+		set {
+			Xsize = value;
+			Ysize = value;
+			Zsize = value;
+			chunkSize = value;
+		}
+	}
+
+	protected Block[, , ] map { get; set; }
+
+	public Chunk(int chunkSize) {
+		ChunkSize = chunkSize;
+		map = new Block[Xsize, Ysize, Zsize];
+	}
+
+	public void SetMap(Block[, , ] chunkMap) {
+		// todo needs chunkSize check
 		map = chunkMap;
 	}
-    public Block[, , ] GetMapArray() {
+	public void SetMap(Chunk chunkMap) {
+		///todo add chunk size check 
+		if (ChunkSize != chunkMap.ChunkSize) {
+			throw new Exception("Chunk size mismatch");
+		}
+		map = chunkMap.GetMapArray();
+	}
+	public void SetBlock(Vector3Int pos, Block block) {
+		map[pos.x, pos.y, pos.z] = block;
+	}
+	public Block[, , ] GetMapArray() {
 		return map;
 	}
 }

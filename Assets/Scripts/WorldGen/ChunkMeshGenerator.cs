@@ -9,8 +9,8 @@ using UnityEngine;
 namespace MeshGen {
 	[RequireComponent(typeof(Chunk))]
 	//[RequireComponent(typeof())]
-	public class MeshGenerator : MonoBehaviour {
-		private Chunk chunkData;
+	public class ChunkMeshGenerator : MonoBehaviour {
+		public Chunk chunkData;
 		private MeshFilter meshFilter;
 
 		//generator
@@ -25,7 +25,7 @@ namespace MeshGen {
 			meshFilter = GetComponent<MeshFilter>();
 			chunkData = GetComponent<Chunk>();
 		}
-		void Start(){
+		void Start() {
 			//GenerateMesh();
 		}
 		public void GenerateMesh() {
@@ -201,8 +201,8 @@ namespace MeshGen {
 				sw.ElapsedMilliseconds,
 				vertCount,
 				trianglesCount,
-				chunkData.map.Length,
-				sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkData.map.Length
+				chunkData.GetMapArray().Length,
+				sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkData.GetMapArray().Length
 			);
 
 			meshFilter.mesh.vertices = verts;
@@ -269,7 +269,6 @@ namespace MeshGen {
 			vCount += 4;
 			tCount += 6;
 			uCount += 4;
-
 		}
 	}
 }
