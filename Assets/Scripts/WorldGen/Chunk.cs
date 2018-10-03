@@ -6,7 +6,7 @@ using MeshGen;
 using MeshGen.WorldGen;
 using UnityEngine;
 
-public class Chunk : MonoBehaviour {
+public class Chunk {
 	public int Xsize = 4;
 	public int Ysize = 4;
 	public int Zsize = 4;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,34 +7,34 @@ using MeshGen.WorldGen;
 using UnityEngine;
 
 namespace MeshGen {
-	[RequireComponent(typeof(Chunk))]
-	//[RequireComponent(typeof())]
-	public class ChunkMeshGenerator : MonoBehaviour {
-		public Chunk chunkData;
-		private MeshFilter meshFilter;
+	public class ChunkMeshGenerator{
+		//public Chunk chunkData;
+		//private MeshFilter meshFilter;
 
-		//generator
-		Vector3[] verts;
-		Vector2[] uvs;
-		int[] tris;
-		int vCount = 0;
+        //generator
+        Vector3[] verts;
+        Vector2[] uvs;
+        int[] tris;
+
+        int vCount = 0;
 		int uCount = 0;
 		int tCount = 0;
 
-		void Awake() {
-			meshFilter = GetComponent<MeshFilter>();
-			chunkData = GetComponent<Chunk>();
-		}
-		void Start() {
-			//GenerateMesh();
-		}
-		public void GenerateMesh() {
+		//void Awake() {
+		//	//meshFilter = GetComponent<MeshFilter>();
+		//	//chunkData = GetComponent<Chunk>();
+		//}
+		//void Start() {
+		//	//GenerateMesh();
+		//}
+
+		public Mesh GenerateMesh(Chunk chunkModel) {
 			int vertCount = 0;
 			int trianglesCount = 0;
-			for (int z = 0; z < chunkData.Zsize; z++) {
-				for (int y = 0; y < chunkData.Ysize; y++) {
-					for (int x = 0; x < chunkData.Xsize; x++) {
-						Block block = chunkData.GetMapArray() [x, y, z];
+			for (int z = 0; z < chunkModel.Zsize; z++) {
+				for (int y = 0; y < chunkModel.Ysize; y++) {
+					for (int x = 0; x < chunkModel.Xsize; x++) {
+						Block block = chunkModel.GetMapArray() [x, y, z];
 
 						vertCount += block.GetDrawData().vertexCount;
 						trianglesCount += block.GetDrawData().triangles.Length;
@@ -42,30 +42,27 @@ namespace MeshGen {
 				}
 			}
 
-			//		print("verts1: " + vertCount);
-			//		print("tris1: " + trianglesCount);
+            //		print("verts1: " + vertCount);
+            //		print("tris1: " + trianglesCount);
 
-			verts = new Vector3[vertCount];
-			uvs = new Vector2[vertCount];
-			UnityEngine.Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
-			tris = new int[trianglesCount];
-			// verts = new List<Vector3>();
-			// tris = new List<int>();
-			// uvs = new List<Vector2>();
+            verts = new Vector3[vertCount];
+            uvs = new Vector2[vertCount];
+            tris = new int[trianglesCount];
 
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
+            //UnityEngine.Debug.LogFormat("Can hold max {0}, vertices.", verts.Length);
+
+			//Stopwatch sw = new Stopwatch();
+			//sw.Start();
 
 			//render visible blocks
-
-			Block[, , ] map = chunkData.GetMapArray();
+			Block[, ,] map = chunkModel.GetMapArray();
 
 			List<Vector3> renderLayer = new List<Vector3>();
 
 			//find visible blocks
-			for (int z = 0; z < chunkData.Zsize; z++) {
-				for (int y = 0; y < chunkData.Ysize; y++) {
-					for (int x = 0; x < chunkData.Xsize; x++) {
+			for (int z = 0; z < chunkModel.Zsize; z++) {
+				for (int y = 0; y < chunkModel.Ysize; y++) {
+					for (int x = 0; x < chunkModel.Xsize; x++) {
 						Vector3 pos = new Vector3(x, y, z);
 						try {
 							//UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
@@ -195,27 +192,35 @@ namespace MeshGen {
 				}
 			}*/
 
-			sw.Stop();
-			UnityEngine.Debug.LogFormat(
-				"Generation took: {0}ms for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
-				sw.ElapsedMilliseconds,
-				vertCount,
-				trianglesCount,
-				chunkData.GetMapArray().Length,
-				sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkData.GetMapArray().Length
-			);
+			//sw.Stop();
+			//UnityEngine.Debug.LogFormat(
+			//	"Generation took: {0}ms for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
+			//	sw.ElapsedMilliseconds,
+			//	vertCount,
+			//	trianglesCount,
+			//	chunkModel.GetMapArray().Length,
+			//	sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkModel.GetMapArray().Length
+			//);
+            
+            //Mesh = meshFilter.mesh;
+            //Mesh.vertices = verts;
+            //Mesh.triangles = tris;
+            //Mesh.uv = uvs;
+            //Mesh.RecalculateNormals();
 
-			meshFilter.mesh.vertices = verts;
-			meshFilter.mesh.uv = uvs;
-			meshFilter.mesh.triangles = tris;
-			meshFilter.mesh.RecalculateNormals();
-			GetComponent<MeshCollider>().sharedMesh = meshFilter.mesh;
-
+            //GetComponent<MeshCollider>().sharedMesh = meshFilter.mesh;
+            return new Mesh {
+                vertices = verts,
+                triangles = tris,
+                uv = uvs
+            };
 		}
+
 		private T printFallThrough<T>(string msg, T obj) {
 			//print(msg + obj.ToString());
 			return obj;
 		}
+
 		private void AppendFace(Block block, Face face, int xpos, int ypos, int zpos) {
 			if (block.Sides == 0) {
 				return;
@@ -259,12 +264,12 @@ namespace MeshGen {
 			}
 			//triangle
 			for (int offset = 0; offset < faceIndicesCount; offset++) {
-				tris[tCount + offset] = tmesh.triangles[faceOrder * 6 + offset] + vCount - faceOrder * 4;
+                tris[tCount + offset] = tmesh.triangles[faceOrder * 6 + offset] + vCount - faceOrder * 4;
 			}
 			//uvs
 			//todo doesnt support multiple face textures
 			for (int offset = 0; offset < faceUvCount; offset++) {
-				uvs[uCount + offset] = tmesh.uv[faceOrder * 4 + offset];
+                uvs[uCount + offset] = tmesh.uv[faceOrder * 4 + offset];
 			}
 			vCount += 4;
 			tCount += 6;

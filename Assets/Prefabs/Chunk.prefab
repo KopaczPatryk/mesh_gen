@@ -21,9 +21,8 @@ GameObject:
   - component: {fileID: 4615775183996822}
   - component: {fileID: 33958715824968308}
   - component: {fileID: 23097424472876558}
-  - component: {fileID: 114332485674013174}
+  - component: {fileID: 114706331558918896}
   - component: {fileID: 64447417639130888}
-  - component: {fileID: 114826888044472336}
   - component: {fileID: 54291051252089606}
   m_Layer: 0
   m_Name: Chunk
@@ -110,12 +109,12 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 0}
---- !u!114 &114332485674013174
+--- !u!114 &114706331558918896
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -123,21 +122,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1058733900000268}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d140548fa2c5084b8fa067c399e2b16, type: 3}
+  m_Script: {fileID: 11500000, guid: b0019b016a129474abfbac373ce0da98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkData: {fileID: 0}
---- !u!114 &114826888044472336
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1058733900000268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1caef84c787fa24ba709b1de47acea4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Xsize: 4
-  Ysize: 4
-  Zsize: 4
