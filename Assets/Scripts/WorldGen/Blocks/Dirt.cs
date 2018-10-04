@@ -16,11 +16,7 @@ namespace MeshGen.WorldGen {
 		public override int TopFaceOrder { get { return 4; } }
 
 		public override int BottomFaceOrder { get { return 5; } }
-
-		//protected const float scale = 1;
-		//protected const int vertCount = 6;
-		//Mesh mesh;
-
+        
 		public Dirt() {
 			Transparent = false;
 			Built = false;
@@ -35,15 +31,19 @@ namespace MeshGen.WorldGen {
 			mesh = toClone.mesh;
 			Built = true;
 		}
-		public override void PopulateMeshData() {
+
+        public override RawMesh GetDrawData()
+        {
+            PopulateMeshData();
+            return mesh;
+        }
+
+        private void PopulateMeshData() {
 			if (!Built) {
 				mesh = new RawMesh();
+
 				//uvs
 				Vector2[] uvs = new Vector2[VertexCount];
-				// for (int i = 0; i < VertexCount; i++)
-				// {
-				// 	uvs[i] = new Vector2(0,0);
-				// }
 
 				for (int i = 0; i < Sides * 4; i += 4) {
 					uvs[i + 0] = new Vector2(0, 1);
@@ -140,19 +140,7 @@ namespace MeshGen.WorldGen {
 				tri[33] = 20 + 2;
 				tri[34] = 20 + 3;
 				tri[35] = 20 + 0;
-
-				/*Vector2[] uvs = new Vector2[VertexCount];
-				int offset = 0;
-				for (int i = 0; i < 6; i++)
-				{
-
-					offset += 4;
-				}*/
-				/*for (int i = 0; i < VertexCount; i++)
-				{
-					uvs[i] = new Vector2(0.5f, 0.5f);
-				}*/
-
+                
 				for (int i = 0; i < VertexCount; i++) {
 					verts[i] *= scale; // new Vector3(.5f, .5f, .5f);
 				}
@@ -161,11 +149,6 @@ namespace MeshGen.WorldGen {
 				mesh.Triangles = tri;
 				Built = true;
 			}
-		}
-		public override RawMesh GetDrawData() {
-			//mesh = new Mesh();
-			PopulateMeshData();
-			return mesh;
 		}
 	}
 }

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ControlerOrbit : MonoBehaviour {
-
-	// Use this for initialization
+    
 	void Start() {
 		StartCoroutine(GoTo());
 	}
-
-	// Update is called once per frame
+    
 	void Update() { }
 	public IEnumerator GoTo() {
 		float progress = 0;

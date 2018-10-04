@@ -19,41 +19,29 @@ public class WorldMap : MonoBehaviour {
 		LoadedChunks = new Dictionary<Vector3Int, Chunk>();
         for (int y = 0; y < 2; y++)
         {
-            for (int x = -5; x < 5; x++)
+            for (int x = -10; x < 10; x++)
             {
-                for (int z = -5; z < 5; z++)
+                for (int z = -10; z < 10; z++)
                 {
                     LoadChunk(new Vector3Int(x, y, z));
+                    Debug.LogFormat("Requesting chunk at {0}, {1}, {2}.", x, y, z);
                 }
             }
         }
-
-		//LoadChunk(new Vector3Int(1,1,1));
-		//LoadChunk(new Vector3Int(2,1,1));
-		//LoadChunk(new Vector3Int(2,1,2));
 	}
 
 	private void LoadChunk(Vector3Int pos) {
 		GameObject go = Instantiate(ChunkPrefab, pos * ChunkSize, transform.rotation);
         ChunkBehaviour behavior = go.GetComponent<ChunkBehaviour>();
-        //behavior.MapChunk = new Chunk(ChunkSize);
 
 		if (LoadedChunks.ContainsKey(pos)) { //get from recycled
 			Chunk tchunk = LoadedChunks[pos];
-            //tchunk.ChunkSize = 13;
-			//go.GetComponent<Chunk>().SetMap(tchunk.GetMapArray());
             behavior.MapChunk = tchunk;
 		}
 		else
 		{
-            //behavior.MapChunk.ChunkSize = ChunkSize;
             behavior.MapChunk = mainMap.GetChunk(pos, ChunkSize);
-
-            // Chunk tchunk = go.GetComponent<Chunk>();
-			//tchunk.ChunkSize = ChunkSize;
-			//tchunk.SetMap(mainMap.GetChunk(pos, ChunkSize));
-			//Chunks.Add(pos, tchunk);
-			LoadedChunks.Add(pos, behavior.MapChunk);
+            LoadedChunks.Add(pos, behavior.MapChunk);
 		}
 	}
 }

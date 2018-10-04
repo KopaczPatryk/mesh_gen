@@ -3,40 +3,38 @@ using System.Collections;
 
 namespace Core
 {
-	public class PlayerController : MonoBehaviour {
-	// Controls how the player moves, originally based on FPSWalker
-	
-	public float speed = 6.0f;
-	public float jumpSpeed = 8.0f;
-	public float gravity = 20.0f;
-	
-	private Vector3 moveDir = Vector3.zero;
-	private bool grounded = false;
+    public class PlayerController : MonoBehaviour
+    {
+        // Controls how the player moves, originally based on FPSWalker
+        public float speed = 6.0f;
+        public float jumpSpeed = 8.0f;
+        public float gravity = 20.0f;
 
-	void FixedUpdate()
-	{
-		if (grounded)
-		{
-			moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-			moveDir = Quaternion.AngleAxis(transform.localEulerAngles.y, Vector3.up) * moveDir;
-			//moveDir = transform.TransformDirection(moveDir);
-			moveDir *= speed;
-			
-			if (Input.GetButton("Jump"))
-			{
-				moveDir.y = jumpSpeed;
-			}
-		}
-		
-		moveDir.y -= gravity*Time.deltaTime;
-		
-		CharacterController controller = GetComponent<CharacterController>();
-		if(controller.enabled != false)
-		{
-			CollisionFlags flags = controller.Move(moveDir*Time.deltaTime);
-			grounded = (flags & CollisionFlags.CollidedBelow) != 0;
-		}
-	}
-}
+        private Vector3 moveDir = Vector3.zero;
+        private bool grounded = false;
 
+        void FixedUpdate()
+        {
+            if (grounded)
+            {
+                moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                moveDir = Quaternion.AngleAxis(transform.localEulerAngles.y, Vector3.up) * moveDir;
+                moveDir *= speed;
+
+                if (Input.GetButton("Jump"))
+                {
+                    moveDir.y = jumpSpeed;
+                }
+            }
+
+            moveDir.y -= gravity * Time.deltaTime;
+
+            CharacterController controller = GetComponent<CharacterController>();
+            if (controller.enabled != false)
+            {
+                CollisionFlags flags = controller.Move(moveDir * Time.deltaTime);
+                grounded = (flags & CollisionFlags.CollidedBelow) != 0;
+            }
+        }
+    }
 }

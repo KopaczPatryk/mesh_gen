@@ -1,10 +1,12 @@
 using UnityEngine;
 
-namespace MeshGen.WorldGen {
-    public class Space : Block {
+namespace MeshGen.WorldGen
+{
+    public class Space : Block
+    {
         public new virtual int Sides { get { return 0; } }
-        public Space() {
-
+        public Space()
+        {
             VertexCount = 0;
             UvCount = 0;
             Indices = 0;
@@ -12,12 +14,14 @@ namespace MeshGen.WorldGen {
             Transparent = true;
         }
 
-        public override RawMesh GetDrawData() {
+        public override RawMesh GetDrawData()
+        {
             return new RawMesh();
         }
 
-        public override void PopulateMeshData() {
-            throw new System.NotImplementedException();
-        }
+        //public override void PopulateMeshData()
+        //{
+        //    throw new System.NotImplementedException();
+        //}
     }
 }

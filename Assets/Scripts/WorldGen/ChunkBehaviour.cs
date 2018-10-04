@@ -25,7 +25,6 @@ public class ChunkBehaviour : MonoBehaviour {
         localmesh.uv = rawMesh.Uv;
         localmesh.triangles = rawMesh.Triangles;
         localmesh.RecalculateNormals();
-        //localmesh.normals = mesh.normals;
         MeshCollider.sharedMesh = localmesh;
     }
 }
