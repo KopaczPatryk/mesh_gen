@@ -17,13 +17,17 @@ public class WorldMap : MonoBehaviour {
 
 	void Start() {
 		LoadedChunks = new Dictionary<Vector3Int, Chunk>();
-		for (int x = 0; x < 4; x++)
-		{
-			for (int z = 0; z < 4; z++)
-			{
-				LoadChunk(new Vector3Int(x, 0, z));
-			}
-		}
+        for (int y = 0; y < 2; y++)
+        {
+            for (int x = -5; x < 5; x++)
+            {
+                for (int z = -5; z < 5; z++)
+                {
+                    LoadChunk(new Vector3Int(x, y, z));
+                }
+            }
+        }
+
 		//LoadChunk(new Vector3Int(1,1,1));
 		//LoadChunk(new Vector3Int(2,1,1));
 		//LoadChunk(new Vector3Int(2,1,2));

@@ -12,8 +12,8 @@ namespace MeshGen.WorldGen {
             Transparent = true;
         }
 
-        public override Mesh GetDrawData() {
-            return new Mesh();
+        public override RawMesh GetDrawData() {
+            return new RawMesh();
         }
 
         public override void PopulateMeshData() {

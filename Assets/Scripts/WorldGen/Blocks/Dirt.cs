@@ -37,7 +37,7 @@ namespace MeshGen.WorldGen {
 		}
 		public override void PopulateMeshData() {
 			if (!Built) {
-				mesh = new Mesh();
+				mesh = new RawMesh();
 				//uvs
 				Vector2[] uvs = new Vector2[VertexCount];
 				// for (int i = 0; i < VertexCount; i++)
@@ -156,57 +156,16 @@ namespace MeshGen.WorldGen {
 				for (int i = 0; i < VertexCount; i++) {
 					verts[i] *= scale; // new Vector3(.5f, .5f, .5f);
 				}
-				mesh.vertices = verts;
-				mesh.uv = uvs;
-				mesh.triangles = tri;
+				mesh.Vertices = verts;
+				mesh.Uv = uvs;
+				mesh.Triangles = tri;
 				Built = true;
 			}
 		}
-		public override Mesh GetDrawData() {
+		public override RawMesh GetDrawData() {
 			//mesh = new Mesh();
 			PopulateMeshData();
 			return mesh;
 		}
-		/* 
-		    public override Mesh FrontFace()
-		    {
-		        throw new System.NotImplementedException();
-		    }
-
-		    public override Mesh BackFace()
-		    {
-		        throw new System.NotImplementedException();
-		    }
-
-		    public override Mesh RightFace()
-		    {
-		        throw new System.NotImplementedException();
-		    }
-
-		    public override Mesh LeftFace()
-		    {
-		        throw new System.NotImplementedException();
-		    }
-
-		    public override Mesh TopFace()
-		    {
-		        throw new System.NotImplementedException();
-		    }
-
-		    public override Mesh BottomFace()
-		    {
-		        throw new System.NotImplementedException();
-			}*/
-		/*
-/// <summary>
-/// 
-/// </summary>
-/// <param name="mesh">Optional mesh to avoid new memory allocations</param>
-/// <returns></returns>
-public Mesh GetDrawData(ref Mesh mesh) {
-    //PopulateMeshData(ref mesh);
-    return mesh;
-} 
-*/
 	}
 }

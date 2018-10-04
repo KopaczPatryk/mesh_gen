@@ -26,12 +26,6 @@ public class MainMapProvider : IMapProvider {
 
     public Chunk GetChunk(Vector3 posAbs, int chunkSize)
     {
-
-        float h = Mathf.PerlinNoise(posAbs.x * chunkSize * 100, posAbs.z * chunkSize * 100) * 64;
-
-        Debug.LogFormat("h: {0}", h);
-        Debug.LogFormat("pos: {0}, {1}, {2}", posAbs.x, posAbs.y, posAbs.z);
-
         Chunk chun = new Chunk(chunkSize);
 		int ObjectCount = 0;
 		for (int z = 0; z < chunkSize; z++) {

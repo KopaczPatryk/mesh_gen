@@ -15,10 +15,10 @@ namespace MeshGen.WorldGen {
 		protected bool Built = false;
 
 		//to change in the future, currently it allocates obsolete memory
-		protected Mesh mesh;
+		protected RawMesh mesh;
 		public bool Transparent { get; protected set; }
 		public abstract void PopulateMeshData();
-		public abstract Mesh GetDrawData();
+		public abstract RawMesh GetDrawData();
 
 		public virtual int Sides { get { return 0; } }
 		public virtual int FrontFaceOrder { get { return 0; } }

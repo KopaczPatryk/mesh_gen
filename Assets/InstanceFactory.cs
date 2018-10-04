@@ -15,7 +15,7 @@ public class InstanceFactory {
 	}
 	public IMapProvider GetMapProvider() {
 		if(currentMapProvider == null)
-			currentMapProvider = MainMapProvider.GetInstance();
+			currentMapProvider = PerlinMapProvider.GetInstance();
 		return currentMapProvider;
 	}
 }
