@@ -20,17 +20,17 @@ namespace MeshGen
         int uCount = 0;
         int tCount = 0;
 
-        public RawMesh GenerateMesh(Chunk chunkModel)
+        public RawMesh GenerateMesh(Chunk mapChunk)
         {
             int vertCount = 0;
             int trianglesCount = 0;
-            for (int z = 0; z < chunkModel.Zsize; z++)
+            for (int z = 0; z < mapChunk.Zsize; z++)
             {
-                for (int y = 0; y < chunkModel.Ysize; y++)
+                for (int y = 0; y < mapChunk.Ysize; y++)
                 {
-                    for (int x = 0; x < chunkModel.Xsize; x++)
+                    for (int x = 0; x < mapChunk.Xsize; x++)
                     {
-                        Block block = chunkModel.GetMapArray()[x, y, z];
+                        Block block = mapChunk.GetBlockArray()[x, y, z];
 
                         vertCount += block.GetDrawData().Vertices.Length;
                         trianglesCount += block.GetDrawData().Triangles.Length;
@@ -45,38 +45,44 @@ namespace MeshGen
             //sw.Start();
 
             //render visible blocks
-            Block[,,] map = chunkModel.GetMapArray();
+            Block[,,] map = mapChunk.GetBlockArray();
 
-            List<Vector3> renderLayer = new List<Vector3>();
+            List<Vector3Int> renderLayer = new List<Vector3Int>();
 
             //find visible blocks
-            for (int z = 0; z < chunkModel.Zsize; z++)
+            int chunkSize = mapChunk.ChunkSize;
+            for (int z = 0; z < mapChunk.Zsize; z++)
             {
-                for (int y = 0; y < chunkModel.Ysize; y++)
+                for (int y = 0; y < mapChunk.Ysize; y++)
                 {
-                    for (int x = 0; x < chunkModel.Xsize; x++)
+                    for (int x = 0; x < mapChunk.Xsize; x++)
                     {
-                        Vector3 pos = new Vector3(x, y, z);
-                        try
+                        //Vector3Int pos = new Vector3Int(x, y, z);
+                        if (mapChunk.IsBlockVisible(new Vector3Int(x, y, z)))
                         {
-                            //UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
-                            if (map[(int)pos.x + 1, (int)pos.y, (int)pos.z].Transparent ||
-                                map[(int)pos.x - 1, (int)pos.y, (int)pos.z].Transparent ||
-                                map[(int)pos.x, (int)pos.y + 1, (int)pos.z].Transparent ||
-                                map[(int)pos.x, (int)pos.y - 1, (int)pos.z].Transparent ||
-                                map[(int)pos.x, (int)pos.y, (int)pos.z + 1].Transparent ||
-                                map[(int)pos.x, (int)pos.y, (int)pos.z - 1].Transparent
-                            )
-                            {
-                                //UnityEngine.Debug.LogFormat("in if {0} {1} {2}", x,y,z);
-                                renderLayer.Add(new Vector3(x, y, z));
-                            }
+                            renderLayer.Add(new Vector3Int(x, y, z));
                         }
-                        catch (IndexOutOfRangeException) //assume neighboring chunks are all transparent
-                        {
-                            renderLayer.Add(new Vector3(x, y, z));
-                            //print(e.Message);
-                        }
+                        
+                        //try
+                        //{
+                        //    //UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
+                        //    if (map[pos.x + 1, pos.y, pos.z].Transparent ||
+                        //        map[pos.x - 1, pos.y, pos.z].Transparent ||
+                        //        map[pos.x, pos.y + 1, pos.z].Transparent ||
+                        //        map[pos.x, pos.y - 1, pos.z].Transparent ||
+                        //        map[pos.x, pos.y, pos.z + 1].Transparent ||
+                        //        map[pos.x, pos.y, pos.z - 1].Transparent
+                        //    )
+                        //    {
+                        //        //UnityEngine.Debug.LogFormat("in if {0} {1} {2}", x,y,z);
+                        //        renderLayer.Add(new Vector3Int(x, y, z));
+                        //    }
+                        //}
+                        //catch (IndexOutOfRangeException) //assume neighboring chunks are all transparent
+                        //{
+                        //    renderLayer.Add(new Vector3Int(x, y, z));
+                        //    //print(e.Message);
+                        //}
                     }
                 }
             }
@@ -84,11 +90,10 @@ namespace MeshGen
             for (int a = 0; a < renderLayer.Count; a++)
             {
 
-                int x = (int)renderLayer[a].x;
-                int y = (int)renderLayer[a].y;
-                int z = (int)renderLayer[a].z;
+                int x = renderLayer[a].x;
+                int y = renderLayer[a].y;
+                int z = renderLayer[a].z;
                 Block block = map[x, y, z];
-
                 //front
                 try
                 {
@@ -161,8 +166,6 @@ namespace MeshGen
                 {
                     AppendFace(block, Face.Bottom, x, y, z);
                 }
-                
-
             }
 
             //sw.Stop();
@@ -174,6 +177,9 @@ namespace MeshGen
             //    chunkModel.GetMapArray().Length,
             //    sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / chunkModel.GetMapArray().Length
             //);
+            vCount = 0;
+            uCount = 0;
+            tCount = 0;
 
             return new RawMesh
             {
@@ -182,7 +188,6 @@ namespace MeshGen
                 Triangles = tris
             };
         }
-        
         private void AppendFace(Block block, Face face, int xpos, int ypos, int zpos)
         {
             if (block.Sides == 0)
@@ -239,5 +244,6 @@ namespace MeshGen
             tCount += 6;
             uCount += 4;
         }
+
     }
 }

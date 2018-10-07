@@ -35,6 +35,8 @@ namespace Core
                 CollisionFlags flags = controller.Move(moveDir * Time.deltaTime);
                 grounded = (flags & CollisionFlags.CollidedBelow) != 0;
             }
+
+
         }
     }
 }

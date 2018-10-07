@@ -23,28 +23,97 @@ public class Chunk {
 		}
 	}
 
-	protected Block[, , ] map { get; set; }
+	protected Block[, , ] Map { get; set; }
 
 	public Chunk(int chunkSize) {
 		ChunkSize = chunkSize;
-		map = new Block[Xsize, Ysize, Zsize];
+		Map = new Block[Xsize, Ysize, Zsize];
 	}
 
 	public void SetMap(Block[, , ] chunkMap) {
 		// todo needs chunkSize check
-		map = chunkMap;
+		Map = chunkMap;
 	}
 	public void SetMap(Chunk chunkMap) {
 		///todo add chunk size check 
 		if (ChunkSize != chunkMap.ChunkSize) {
 			throw new Exception("Chunk size mismatch");
 		}
-		map = chunkMap.GetMapArray();
+		Map = chunkMap.GetBlockArray();
 	}
 	public void SetBlock(Vector3Int pos, Block block) {
-		map[pos.x, pos.y, pos.z] = block;
+		Map[pos.x, pos.y, pos.z] = block;
 	}
-	public Block[, , ] GetMapArray() {
-		return map;
+	public Block[, , ] GetBlockArray() {
+		return Map;
 	}
+    public bool IsBlockVisible(Vector3Int vec)
+    {
+        Vector3Int right    = new Vector3Int(vec.x + 1, vec.y, vec.z);
+        Vector3Int left     = new Vector3Int(vec.x - 1, vec.y, vec.z);
+        Vector3Int above    = new Vector3Int(vec.x, vec.y + 1, vec.z);
+        Vector3Int below    = new Vector3Int(vec.x, vec.y - 1, vec.z);
+        Vector3Int front    = new Vector3Int(vec.x, vec.y, vec.z + 1);
+        Vector3Int back     = new Vector3Int(vec.x, vec.y, vec.z - 1);
+        if (!IsInChunkBounds(vec))
+        {
+            throw new Exception("Position out of chunk bounds: " + vec.ToString());
+        }
+        else
+        {
+            if (!IsInChunkBounds(right) ||
+            !IsInChunkBounds(left) ||
+            !IsInChunkBounds(above) ||
+            !IsInChunkBounds(below) ||
+            !IsInChunkBounds(front) ||
+            !IsInChunkBounds(back))
+            {
+                return true;
+            }
+            else if (   Map[right.x, right.y, right.z].Transparent ||
+                        Map[left.x, left.y, left.z].Transparent ||
+                        Map[above.x, above.y, above.z].Transparent ||
+                        Map[below.x, below.y, below.z].Transparent ||
+                        Map[front.x, front.y, front.z].Transparent ||
+                        Map[back.x, back.y, back.z].Transparent)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    protected bool IsInChunkBounds(Vector3Int vec)
+    {
+        if (vec.x < 0 || vec.y < 0 || vec.z < 0)
+        {
+            return false;
+        }
+        else if (vec.x >= chunkSize || vec.y >= chunkSize || vec.z >= chunkSize)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    protected bool IsAtChunkBoundary(Vector3Int vec)
+    {
+        if (vec.x == 0 || vec.y == 0 || vec.z == 0)
+        {
+            return true;
+        }
+        else if (vec.x == chunkSize|| vec.y == chunkSize || vec.z == chunkSize)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

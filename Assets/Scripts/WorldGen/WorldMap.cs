@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Core.Interaction;
 using MeshGen;
+using MeshGen.WorldGen;
 using UnityEngine;
 
 public class WorldMap : MonoBehaviour {
@@ -8,23 +11,26 @@ public class WorldMap : MonoBehaviour {
 
 	IMapProvider mainMap;
 	public const int ChunkSize = 8;
-	public Dictionary<Vector3Int, Chunk> LoadedChunks { get; set; }
-	
-	void Awake()
+	public Dictionary<Vector3Int, Chunk> Chunks { get; set; }
+	public Dictionary<Vector3Int, ChunkBehaviour> LoadedChunkObjects { get; set; }
+    private GameObject lastClickedGizmo;
+
+    void Awake()
 	{
 		mainMap = InstanceFactory.GetInstance().GetMapProvider(); 
 	}
 
 	void Start() {
-		LoadedChunks = new Dictionary<Vector3Int, Chunk>();
-        for (int y = 0; y < 2; y++)
+		Chunks = new Dictionary<Vector3Int, Chunk>();
+        LoadedChunkObjects = new Dictionary<Vector3Int, ChunkBehaviour>();
+        for (int y = 0; y < 1; y++)
         {
-            for (int x = -10; x < 10; x++)
+            for (int x = -1; x < 1; x++)
             {
-                for (int z = -10; z < 10; z++)
+                for (int z = -1; z < 1; z++)
                 {
                     LoadChunk(new Vector3Int(x, y, z));
-                    Debug.LogFormat("Requesting chunk at {0}, {1}, {2}.", x, y, z);
+                    //Debug.LogFormat("Requesting chunk at {0}, {1}, {2}.", x, y, z);
                 }
             }
         }
@@ -32,16 +38,117 @@ public class WorldMap : MonoBehaviour {
 
 	private void LoadChunk(Vector3Int pos) {
 		GameObject go = Instantiate(ChunkPrefab, pos * ChunkSize, transform.rotation);
-        ChunkBehaviour behavior = go.GetComponent<ChunkBehaviour>();
+        ChunkBehaviour chunkBehavior = go.GetComponent<ChunkBehaviour>();
+        LoadedChunkObjects.Add(pos, chunkBehavior);
+        chunkBehavior.Interacted += ChunkBehavior_Interacted;
 
-		if (LoadedChunks.ContainsKey(pos)) { //get from recycled
-			Chunk tchunk = LoadedChunks[pos];
-            behavior.MapChunk = tchunk;
+		if (Chunks.ContainsKey(pos)) { //get from recycled
+			Chunk tchunk = Chunks[pos];
+            chunkBehavior.MapChunk = tchunk;
 		}
 		else
 		{
-            behavior.MapChunk = mainMap.GetChunk(pos, ChunkSize);
-            LoadedChunks.Add(pos, behavior.MapChunk);
+            chunkBehavior.MapChunk = mainMap.GetChunk(pos, ChunkSize);
+            Chunks.Add(pos, chunkBehavior.MapChunk);
 		}
 	}
+
+    private void ChunkBehavior_Interacted(RaycastHit hit, InteractionType interaction)
+    {
+        switch (interaction)
+        {
+            case InteractionType.Destroy:
+                Vector3 respos = (hit.point - hit.normal / 2);
+                Vector3Int hitPosInside = new Vector3Int(Mathf.FloorToInt(respos.x), Mathf.FloorToInt(respos.y), Mathf.FloorToInt(respos.z));
+
+                //var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                //obj.transform.position = respos;
+
+                //if (lastClickedGizmo != null)
+                //{
+                //    Destroy(lastClickedGizmo);
+                //}
+
+                //lastClickedGizmo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                //lastClickedGizmo.transform.position = GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside) + Vector3.one / 2;
+                //lastClickedGizmo.transform.localScale = Vector3.one * 1.1f;
+
+                print("hit pos" + hitPosInside);
+                print("chunkpos multiplied: " + GetChunkPos(hitPosInside) * ChunkSize);
+                print("block localpos: " + GetBlockLocalPos(hitPosInside));
+                print("summed: " + (GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside)));
+
+                SetBlock(hitPosInside, new MeshGen.WorldGen.Space());
+                GetChunkBehaviour(GetChunkPos(hitPosInside)).RegenerateMesh();
+                break;
+        }
+    }
+
+    private ChunkBehaviour GetChunkBehaviour(Vector3Int absPos)
+    {
+        return LoadedChunkObjects[GetChunkPos(absPos)];
+    }
+    private Block GetBlock(Vector3Int absPos)
+    {
+        var chunk = LoadedChunkObjects[GetChunkPos(absPos)].MapChunk.GetBlockArray();
+
+        Vector3Int localPos = GetBlockLocalPos(absPos);
+        try
+        {
+            print(chunk[localPos.x, localPos.y, localPos.z].GetType().ToString());
+            return chunk[localPos.x, localPos.y, localPos.z];
+        }
+        catch (IndexOutOfRangeException)
+        {
+            print(localPos.ToString());
+        }
+        return null;
+    }
+    private Block SetBlock(Vector3Int absPos, Block block)
+    {
+        var chunk = LoadedChunkObjects[GetChunkPos(absPos)].MapChunk.GetBlockArray();
+
+        Vector3Int localPos = GetBlockLocalPos(absPos);
+        try
+        {
+            return chunk[localPos.x, localPos.y, localPos.z] = block;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            print(localPos.ToString());
+        }
+        return null;
+    }
+    public static int Mod(int a, int n)
+    {
+        return a - (int)Math.Floor((float)a / n) * n;
+    }
+    private Vector3Int GetBlockLocalPos (Vector3Int absPos)
+    {
+        //print("abspos" + absPos.ToString());
+        //Vector3Int chunkPos = GetChunkPos(absPos);
+        //print("ChunkPos" + chunkPos.ToString());
+        
+        int x = Mod(absPos.x, ChunkSize);
+        int y = Mod(absPos.y, ChunkSize);
+        int z = Mod(absPos.z, ChunkSize);
+        return new Vector3Int(x, y, z);
+    }
+    private Vector3Int GetChunkPos(Vector3Int absPos)
+    {
+        Vector3Int chunkPos = new Vector3Int
+        {
+            x = (int)Mathf.Floor(absPos.x / (float)ChunkSize),
+            y = (int)Mathf.Floor(absPos.y / (float)ChunkSize),
+            z = (int)Mathf.Floor(absPos.z / (float)ChunkSize)
+        };
+        //if (absPos.x < 0)
+        //    chunkPos.x = (absPos.x - 7) / ChunkSize;
+        //if (absPos.y < 0)
+        //    chunkPos.y = (absPos.y - 7) / ChunkSize;
+        //if (absPos.z < 0)
+        //    chunkPos.z = (absPos.z - 7) / ChunkSize;
+        
+        return chunkPos;
+    }
 }
