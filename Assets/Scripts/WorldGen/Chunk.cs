@@ -7,6 +7,7 @@ using MeshGen.WorldGen;
 using UnityEngine;
 
 public class Chunk {
+	protected Block[, , ] Map { get; set; }
 	public int Xsize = 4;
 	public int Ysize = 4;
 	public int Zsize = 4;
@@ -22,9 +23,7 @@ public class Chunk {
 			chunkSize = value;
 		}
 	}
-
-	protected Block[, , ] Map { get; set; }
-
+    
 	public Chunk(int chunkSize) {
 		ChunkSize = chunkSize;
 		Map = new Block[Xsize, Ysize, Zsize];
@@ -41,12 +40,25 @@ public class Chunk {
 		}
 		Map = chunkMap.GetBlockArray();
 	}
+	public Block[,,] GetBlockArray() {
+		return Map;
+	}
+
+    public Block GetBlock(Vector3Int pos)
+    {
+        if (IsInChunkBounds(pos))
+        {
+            return Map[pos.x, pos.y, pos.z];
+        }
+        else
+        {
+            throw new Exception("Position out of chunk bounds: " + pos.ToString());
+        }
+    }
 	public void SetBlock(Vector3Int pos, Block block) {
 		Map[pos.x, pos.y, pos.z] = block;
 	}
-	public Block[, , ] GetBlockArray() {
-		return Map;
-	}
+    
     public bool IsBlockVisible(Vector3Int vec)
     {
         Vector3Int right    = new Vector3Int(vec.x + 1, vec.y, vec.z);
@@ -85,8 +97,7 @@ public class Chunk {
             }
         }
     }
-
-    protected bool IsInChunkBounds(Vector3Int vec)
+    public bool IsInChunkBounds(Vector3Int vec)
     {
         if (vec.x < 0 || vec.y < 0 || vec.z < 0)
         {
@@ -101,7 +112,7 @@ public class Chunk {
             return true;
         }
     }
-    protected bool IsAtChunkBoundary(Vector3Int vec)
+    public bool IsAtChunkBoundary(Vector3Int vec)
     {
         if (vec.x == 0 || vec.y == 0 || vec.z == 0)
         {

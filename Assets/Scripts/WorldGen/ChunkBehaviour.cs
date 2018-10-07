@@ -8,10 +8,11 @@ using MeshGen;
 using UnityEngine;
 
 public delegate void InteractionHandler(RaycastHit hit, InteractionType interaction);
+
 public class ChunkBehaviour : MonoBehaviour, IInteractable {
     public event InteractionHandler Interacted;
     public Chunk MapChunk;
-    public ChunkMeshGenerator MeshGenerator;
+    public PartialChunkMeshGenerator MeshGenerator;
 
     private MeshFilter meshFilter;
     private MeshCollider MeshCollider;
@@ -25,7 +26,7 @@ public class ChunkBehaviour : MonoBehaviour, IInteractable {
     }
 
     void Start() {
-        MeshGenerator = new ChunkMeshGenerator();
+        MeshGenerator = new PartialChunkMeshGenerator();
         MeshCollider = GetComponent<MeshCollider>();
         meshFilter = GetComponent<MeshFilter>();
 

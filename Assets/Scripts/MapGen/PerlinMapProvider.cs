@@ -20,7 +20,6 @@ public class PerlinMapProvider : IMapProvider {
     public Chunk GetChunk(Vector3 posAbs, int chunkSize)
     {
         Chunk chunk = new Chunk(chunkSize);
-        //Debug.Log("pos: " + posAbs);
         
         for (int x = 0; x < chunkSize; x++)
         {

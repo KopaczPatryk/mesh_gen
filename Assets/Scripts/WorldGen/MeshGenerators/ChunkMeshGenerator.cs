@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace MeshGen
 {
-    public class ChunkMeshGenerator : IChunkMeshGenerator
+    public class PartialChunkMeshGenerator : IChunkMeshGenerator
     {
         //generator
         Vector3[] verts;
@@ -244,6 +244,5 @@ namespace MeshGen
             tCount += 6;
             uCount += 4;
         }
-
     }
 }
