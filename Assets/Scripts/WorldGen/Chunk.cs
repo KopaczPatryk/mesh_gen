@@ -29,17 +29,18 @@ public class Chunk {
 		Map = new Block[Xsize, Ysize, Zsize];
 	}
 
-	public void SetMap(Block[, , ] chunkMap) {
-		// todo needs chunkSize check
-		Map = chunkMap;
-	}
-	public void SetMap(Chunk chunkMap) {
-		///todo add chunk size check 
-		if (ChunkSize != chunkMap.ChunkSize) {
-			throw new Exception("Chunk size mismatch");
-		}
-		Map = chunkMap.GetBlockArray();
-	}
+	//public void SetMap(Block[, , ] chunkMap) {
+	//	// todo needs chunkSize check
+	//	Map = chunkMap;
+	//}
+
+	//public void SetMap(Chunk chunkMap) {
+	//	///todo add chunk size check 
+	//	if (ChunkSize != chunkMap.ChunkSize) {
+	//		throw new Exception("Chunk size mismatch");
+	//	}
+	//	Map = chunkMap.GetBlockArray();
+	//}
 	public Block[,,] GetBlockArray() {
 		return Map;
 	}
@@ -114,11 +115,19 @@ public class Chunk {
     }
     public bool IsAtChunkBoundary(Vector3Int vec)
     {
-        if (vec.x == 0 || vec.y == 0 || vec.z == 0)
-        {
-            return true;
-        }
-        else if (vec.x == chunkSize|| vec.y == chunkSize || vec.z == chunkSize)
+        //if (vec.x == 0 || vec.y == 0 || vec.z == 0)
+        //{
+        //    return true;
+        //}
+        //else if (vec.x == chunkSize || vec.y == chunkSize || vec.z == chunkSize)
+        //{
+        //    return true;
+        //}
+        //else
+        //{
+        //    return false;
+        //}
+        if (vec.x % ChunkSize == 0 && vec.y % ChunkSize == 0 && vec.z % ChunkSize == 0)
         {
             return true;
         }

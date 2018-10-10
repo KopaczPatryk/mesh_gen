@@ -5,6 +5,7 @@ using Assets.Scripts.Core.Interaction;
 using MeshGen;
 using MeshGen.WorldGen;
 using UnityEngine;
+using static Assets.Scripts.Helpers.MathHelpers;
 
 public class WorldMap : MonoBehaviour {
 	public GameObject ChunkPrefab;
@@ -13,6 +14,7 @@ public class WorldMap : MonoBehaviour {
 	public const int ChunkSize = 8;
 	public Dictionary<Vector3Int, Chunk> Chunks { get; set; }
 	public Dictionary<Vector3Int, ChunkBehaviour> LoadedChunkObjects { get; set; }
+    private GameObject lastClickedGizmo { get; set; }
 
     void Awake()
 	{
@@ -22,22 +24,23 @@ public class WorldMap : MonoBehaviour {
 	void Start() {
 		Chunks = new Dictionary<Vector3Int, Chunk>();
         LoadedChunkObjects = new Dictionary<Vector3Int, ChunkBehaviour>();
-        for (int y = 0; y < 1; y++)
+        for (int y = -3; y < 2; y++)
         {
-            for (int x = -1; x < 1; x++)
+            for (int x = -3; x < 3; x++)
             {
-                for (int z = -1; z < 1; z++)
+                for (int z = -3; z < 3; z++)
                 {
                     LoadChunk(new Vector3Int(x, y, z));
                 }
             }
         }
-	}
+        //LoadChunk(new Vector3Int(0, 1, -1));
+    }
 
 	private void LoadChunk(Vector3Int pos) {
 		GameObject go = Instantiate(ChunkPrefab, pos * ChunkSize, transform.rotation);
         ChunkBehaviour chunkBehavior = go.GetComponent<ChunkBehaviour>();
-        LoadedChunkObjects.Add(pos, chunkBehavior);
+        
         chunkBehavior.Interacted += ChunkBehavior_Interacted;
 
 		if (Chunks.ContainsKey(pos)) { //get from recycled
@@ -48,7 +51,9 @@ public class WorldMap : MonoBehaviour {
 		{
             chunkBehavior.MapChunk = mainMap.GetChunk(pos, ChunkSize);
             Chunks.Add(pos, chunkBehavior.MapChunk);
-		}
+            go.name = pos.ToString();
+            LoadedChunkObjects.Add(pos, chunkBehavior);
+        }
 	}
 
     private void ChunkBehavior_Interacted(RaycastHit hit, InteractionType interaction)
@@ -57,17 +62,40 @@ public class WorldMap : MonoBehaviour {
         {
             case InteractionType.Destroy:
                 Vector3 respos = (hit.point - hit.normal / 2);
-                Vector3Int hitPosInside = new Vector3Int(Mathf.FloorToInt(respos.x), Mathf.FloorToInt(respos.y), Mathf.FloorToInt(respos.z));
-                
+                Vector3Int hitPosInside = new Vector3Int((int)Mathf.Floor(respos.x), (int)Mathf.Floor(respos.y), (int)Mathf.Floor(respos.z));
+                var chunkpos = GetChunkPos(hitPosInside);
+
+                //var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                //obj.transform.position = respos;
+
+                //if (lastClickedGizmo != null)
+                //{
+                //    Destroy(lastClickedGizmo);
+                //}
+
+                //lastClickedGizmo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                //lastClickedGizmo.transform.position = GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside) + Vector3.one / 2;
+                //lastClickedGizmo.transform.localScale = Vector3.one * 1.1f;
+
+                print("hit pos" + hitPosInside);
+                print("chunkpos: " + GetChunkPos(hitPosInside));
+                print("chunkpos multiplied: " + GetChunkPos(hitPosInside) * ChunkSize);
+                print("block localpos: " + GetBlockLocalPos(hitPosInside));
+                print("summed: " + (GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside)));
+
                 SetBlock(hitPosInside, new MeshGen.WorldGen.Space());
-                GetChunkBehaviour(GetChunkPos(hitPosInside)).RegenerateMesh();
+                //GetChunkBehaviour(chunkpos).test();
+                GetChunkBehaviour(chunkpos).RegenerateMesh();
+
                 break;
         }
     }
 
-    private ChunkBehaviour GetChunkBehaviour(Vector3Int absPos)
+    private ChunkBehaviour GetChunkBehaviour(Vector3Int chunkPos)
     {
-        return LoadedChunkObjects[GetChunkPos(absPos)];
+        //Debug.Log("szukam: " + GetChunkPos(chunkPos).ToString());
+        //return GameObject.Find(chunkPos.ToString()).GetComponent<ChunkBehaviour>();
+        return LoadedChunkObjects[chunkPos];
     }
     public Block GetBlock(Vector3Int absPos)
     {
@@ -88,17 +116,16 @@ public class WorldMap : MonoBehaviour {
     public void SetBlock(Vector3Int absPos, Block block)
     {
         Vector3Int localPos = GetBlockLocalPos(absPos);
-        LoadedChunkObjects[GetChunkPos(absPos)].MapChunk.SetBlock(GetBlockLocalPos(absPos), block);
+        //Debug.Log("zmieniono blok na pozycji: " + localPos.ToString());
+
+        LoadedChunkObjects[GetChunkPos(absPos)].MapChunk.SetBlock(localPos, block);
     }
-    public static int Mod(int a, int n)
-    {
-        return a - (int)Math.Floor((float)a / n) * n;
-    }
+
     private Vector3Int GetBlockLocalPos (Vector3Int absPos)
     {
-        int x = Mod(absPos.x, ChunkSize);
-        int y = Mod(absPos.y, ChunkSize);
-        int z = Mod(absPos.z, ChunkSize);
+        int x = Modulo(absPos.x, ChunkSize);
+        int y = Modulo(absPos.y, ChunkSize);
+        int z = Modulo(absPos.z, ChunkSize);
         return new Vector3Int(x, y, z);
     }
     private Vector3Int GetChunkPos(Vector3Int absPos)
