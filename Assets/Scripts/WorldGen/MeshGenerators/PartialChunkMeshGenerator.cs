@@ -82,57 +82,33 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 int z = visibleBlockPositions[a].z;
                 BaseBlock block = blocks[x, y, z];
                 //front
-                try {
-                    if (blocks[x, y, z - 1].Transparent) {
-                        AppendFace(mesh, block, Face.Front, x, y, z);
-                    }
-                } catch (IndexOutOfRangeException) {
-                    //assume neighbor transparent
+                if (!chunk.IsInChunkBounds(x, y, z - 1) ||
+                     blocks[x, y, z - 1].Transparent) {
                     AppendFace(mesh, block, Face.Front, x, y, z);
                 }
                 //back
-                try {
-                    if (blocks[x, y, z + 1].Transparent) {
-                        AppendFace(mesh, block, Face.Back, x, y, z);
-                    }
-                } catch (IndexOutOfRangeException) {
-                    //assume neighbor transparent
+                if (!chunk.IsInChunkBounds(x, y, z + 1) ||
+                    blocks[x, y, z + 1].Transparent) {
                     AppendFace(mesh, block, Face.Back, x, y, z);
                 }
                 //left
-                try {
-                    if (blocks[x - 1, y, z].Transparent) {
-                        AppendFace(mesh, block, Face.Left, x, y, z);
-                    }
-                } catch (IndexOutOfRangeException) {
-                    //assume neighbor transparent
+                if (!chunk.IsInChunkBounds(x - 1, y, z) ||
+                    blocks[x - 1, y, z].Transparent) {
                     AppendFace(mesh, block, Face.Left, x, y, z);
                 }
                 //right
-                try {
-                    if (blocks[x + 1, y, z].Transparent) {
-                        AppendFace(mesh, block, Face.Right, x, y, z);
-                    }
-                } catch (IndexOutOfRangeException) {
-                    //assume neighbor transparent
+                if (!chunk.IsInChunkBounds(x + 1, y, z) ||
+                    blocks[x + 1, y, z].Transparent) {
                     AppendFace(mesh, block, Face.Right, x, y, z);
                 }
                 //top
-                try {
-                    if (blocks[x, y + 1, z].Transparent) {
-                        AppendFace(mesh, block, Face.Top, x, y, z);
-                    }
-                } catch (IndexOutOfRangeException) {
-                    //assume neighbor transparent
+                if (!chunk.IsInChunkBounds(x, y + 1, z) ||
+                    blocks[x, y + 1, z].Transparent) {
                     AppendFace(mesh, block, Face.Top, x, y, z);
                 }
                 //bottom
-                try {
-                    if (blocks[x, y - 1, z].Transparent) {
-                        AppendFace(mesh, block, Face.Bottom, x, y, z);
-                    }
-                } catch (IndexOutOfRangeException) {
-                    //assume neighbor transparent
+                if (!chunk.IsInChunkBounds(x, y - 1, z) ||
+                    blocks[x, y - 1, z].Transparent) {
                     AppendFace(mesh, block, Face.Bottom, x, y, z);
                 }
             }

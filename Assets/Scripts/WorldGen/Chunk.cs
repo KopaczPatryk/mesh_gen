@@ -75,6 +75,13 @@ namespace Assets.Scripts.WorldGen {
                 return true;
             }
         }
+        public bool IsInChunkBounds(int x, int y, int z) {
+            if (x < 0 || y < 0 || z < 0 || x >= chunkSize || y >= chunkSize || z >= chunkSize) {
+                return false;
+            } else {
+                return true;
+            }
+        }
         public bool IsAtChunkBoundary(Vector3Int vec) {
             if (vec.x % ChunkSize == 0 && vec.y % ChunkSize == 0 && vec.z % ChunkSize == 0) {
                 return true;
