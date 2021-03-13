@@ -1,30 +1,29 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using MeshGen.WorldGen;
+using Assets.Scripts.WorldGen.Blocks;
 using UnityEngine;
 
-namespace MeshGen {
+namespace Assets.Scripts.WorldGen.MeshGenerators {
     public class PartialChunkMeshGenerator : IChunkMeshGenerator {
         //generator
-        Vector3[] verts;
-        Vector2[] uvs;
-        int[] tris;
+        private Vector3[] verts;
+        private Vector2[] uvs;
+        private int[] tris;
 
-        int vCount = 0;
-        int uCount = 0;
-        int tCount = 0;
+        private int vCount = 0;
+        private int uCount = 0;
+        private int tCount = 0;
 
         public RawMesh GenerateMesh(Chunk mapChunk) {
+            BaseBlock[,,] map = mapChunk.Map;
+
             int vertCount = 0;
             int trianglesCount = 0;
-            for (int z = 0; z < mapChunk.Zsize; z++) {
-                for (int y = 0; y < mapChunk.Ysize; y++) {
-                    for (int x = 0; x < mapChunk.Xsize; x++) {
-                        BaseBlock block = mapChunk.GetBlockArray()[x, y, z];
+            for (int z = 0; z < mapChunk.zSize; z++) {
+                for (int y = 0; y < mapChunk.ySize; y++) {
+                    for (int x = 0; x < mapChunk.xSize; x++) {
+                        BaseBlock block = map[x, y, z];
 
                         if (block.CanBeRendered) {
                             vertCount += block.GetDrawData().Vertices.Length;
@@ -37,19 +36,17 @@ namespace MeshGen {
             uvs = new Vector2[vertCount];
             tris = new int[trianglesCount];
 
+            //render visible blocks
             Stopwatch sw = new Stopwatch();
             sw.Start();
-
-            //render visible blocks
-            BaseBlock[,,] map = mapChunk.GetBlockArray();
 
             List<Vector3Int> renderLayer = new List<Vector3Int>();
 
             //find visible blocks
             int chunkSize = mapChunk.ChunkSize;
-            for (int z = 0; z < mapChunk.Zsize; z++) {
-                for (int y = 0; y < mapChunk.Ysize; y++) {
-                    for (int x = 0; x < mapChunk.Xsize; x++) {
+            for (int z = 0; z < mapChunk.zSize; z++) {
+                for (int y = 0; y < mapChunk.ySize; y++) {
+                    for (int x = 0; x < mapChunk.xSize; x++) {
                         //Vector3Int pos = new Vector3Int(x, y, z);
                         if (mapChunk.IsBlockVisible(new Vector3Int(x, y, z))) {
                             renderLayer.Add(new Vector3Int(x, y, z));
@@ -80,7 +77,6 @@ namespace MeshGen {
             }
             //process visible faces
             for (int a = 0; a < renderLayer.Count; a++) {
-
                 int x = renderLayer[a].x;
                 int y = renderLayer[a].y;
                 int z = renderLayer[a].z;
@@ -148,8 +144,8 @@ namespace MeshGen {
                sw.ElapsedTicks,
                vertCount,
                trianglesCount,
-               mapChunk.GetBlockArray().Length,
-               sw.ElapsedTicks / mapChunk.GetBlockArray().Length
+               mapChunk.Map.Length,
+               sw.ElapsedTicks / mapChunk.Map.Length
             );
             vCount = 0;
             uCount = 0;
@@ -161,13 +157,13 @@ namespace MeshGen {
                 Triangles = tris
             };
         }
-        private void AppendFace(BaseBlock block, Face face, int xpos, int ypos, int zpos) {
+        private void AppendFace(BaseBlock block, Face face, int xPos, int yPos, int zPos) {
             if (!block.CanBeRendered) {
                 return;
             }
             int faceOrder = face.GetHashCode();
 
-            RawMesh tmesh = block.GetDrawData();
+            RawMesh tMesh = block.GetDrawData();
             int sideCount = block.Sides;
             int faceVertexCount = block.VertexCount / sideCount;
             int faceIndicesCount = block.Indices / sideCount;
@@ -175,16 +171,16 @@ namespace MeshGen {
 
             //vertex
             for (int offset = 0; offset < faceVertexCount; offset++) {
-                verts[vCount + offset] = tmesh.Vertices[faceOrder * 4 + offset] + new Vector3(xpos, ypos, zpos);
+                verts[vCount + offset] = tMesh.Vertices[faceOrder * 4 + offset] + new Vector3(xPos, yPos, zPos);
             }
             //triangle
             for (int offset = 0; offset < faceIndicesCount; offset++) {
-                tris[tCount + offset] = tmesh.Triangles[faceOrder * 6 + offset] + vCount - faceOrder * 4;
+                tris[tCount + offset] = tMesh.Triangles[faceOrder * 6 + offset] + vCount - faceOrder * 4;
             }
             //uvs
             //todo doesnt support multiple face textures
             for (int offset = 0; offset < faceUvCount; offset++) {
-                uvs[uCount + offset] = tmesh.Uv[faceOrder * 4 + offset];
+                uvs[uCount + offset] = tMesh.Uv[faceOrder * 4 + offset];
             }
             vCount += 4;
             tCount += 6;

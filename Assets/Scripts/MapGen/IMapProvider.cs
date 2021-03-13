@@ -1,7 +1,10 @@
-using MeshGen.WorldGen;
+using Assets.Scripts.WorldGen;
+using Assets.Scripts.WorldGen.Blocks;
 using UnityEngine;
 
-public interface IMapProvider {
-    BaseBlock GetBlock(Vector3 posAbs);
-    Chunk GetChunk(Vector3 posAbs, int chunkSize);
+namespace Assets.Scripts.MapGen {
+    public interface IMapProvider {
+        BaseBlock GetBlock(Vector3 posAbs);
+        Chunk GetChunk(Vector3 posAbs, int chunkSize);
+    }
 }

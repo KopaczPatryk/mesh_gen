@@ -1,4 +1,4 @@
-namespace MeshGen {
+namespace Assets.Scripts.WorldGen {
     public enum Face {
         Front = 0,
         Back = 1,

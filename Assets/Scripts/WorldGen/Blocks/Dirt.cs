@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.AccessControl;
-using System.Security.Cryptography;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace MeshGen.WorldGen {
+namespace Assets.Scripts.WorldGen.Blocks {
     public class Dirt : BaseBlock {
         private static RawMesh prototype = new RawMesh();
-        private static bool Built = false;
-        public Dirt() : base(transparent: true, sides: 6, uvCount: 24, vertexCount: 24, indices: 36) { }
+        private static bool IsBuilt = false;
+        public Dirt() : base(transparent: true,
+                             sides: 6,
+                             uvCount: 24,
+                             vertexCount: 24,
+                             indices: 36) { }
 
         public override RawMesh GetDrawData() {
             PopulateMeshData();
@@ -16,7 +16,7 @@ namespace MeshGen.WorldGen {
         }
 
         private void PopulateMeshData() {
-            if (!Built) {
+            if (!IsBuilt) {
                 //uvs
                 Vector2[] uvs = new Vector2[VertexCount];
 
@@ -125,7 +125,7 @@ namespace MeshGen.WorldGen {
                 prototype.Vertices = verts;
                 prototype.Uv = uvs;
                 prototype.Triangles = tri;
-                Built = true;
+                IsBuilt = true;
             }
         }
     }

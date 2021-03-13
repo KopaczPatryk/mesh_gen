@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-namespace MeshGen.WorldGen {
-    public abstract class BaseBlock : System.Object {
+namespace Assets.Scripts.WorldGen.Blocks {
+    public abstract class BaseBlock : object {
         // protected RawMesh mesh = new RawMesh();
         private const float scale = 1;
 
@@ -18,13 +18,11 @@ namespace MeshGen.WorldGen {
         public abstract RawMesh GetDrawData();
         public int Sides { get; private set; } = 0;
 
-        protected BaseBlock(
-                            bool transparent,
+        protected BaseBlock(bool transparent,
                             int sides,
                             int uvCount,
                             int vertexCount,
-                            int indices
-                            ) {
+                            int indices) {
 
             Transparent = transparent;
             Sides = sides;
