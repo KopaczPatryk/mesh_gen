@@ -7,10 +7,7 @@ public class RawMesh {
     public Vector2[] Uv;
     public int[] Triangles;
 
-    // public RawMesh()
-    // {
-    //     Vertices = new Vector3[0];
-    //     Uv = new Vector2[0];
-    //     Triangles = new int[0];
-    // }
+    public int vertexCount { get; set; } = 0;
+    public int uvCount { get; set; } = 0;
+    public int trianglesCount { get; set; } = 0;
 }
