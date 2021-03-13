@@ -41,10 +41,10 @@ namespace Assets.Scripts.WorldGen {
 
             if (Chunks.ContainsKey(pos)) { //get from recycled
                 Chunk tChunk = Chunks[pos];
-                chunkBehavior.MapChunk = tChunk;
+                chunkBehavior.Chunk = tChunk;
             } else {
-                chunkBehavior.MapChunk = mainMap.GetChunk(pos, ChunkSize);
-                Chunks.Add(pos, chunkBehavior.MapChunk);
+                chunkBehavior.Chunk = mainMap.GetChunk(pos, ChunkSize);
+                Chunks.Add(pos, chunkBehavior.Chunk);
                 go.name = pos.ToString();
                 LoadedChunkObjects.Add(pos, chunkBehavior);
             }
@@ -89,7 +89,7 @@ namespace Assets.Scripts.WorldGen {
             return LoadedChunkObjects[chunkPos];
         }
         public BaseBlock GetBlock(Vector3Int absPos) {
-            var chunk = LoadedChunkObjects[GetChunkPos(absPos)].MapChunk.Map;
+            var chunk = LoadedChunkObjects[GetChunkPos(absPos)].Chunk.Blocks;
             Vector3Int localPos = GetBlockLocalPos(absPos);
 
             try {
@@ -104,7 +104,7 @@ namespace Assets.Scripts.WorldGen {
             Vector3Int localPos = GetBlockLocalPos(absPos);
             //Debug.Log("zmieniono blok na pozycji: " + localPos.ToString());
 
-            LoadedChunkObjects[GetChunkPos(absPos)].MapChunk.SetBlock(localPos, block);
+            LoadedChunkObjects[GetChunkPos(absPos)].Chunk.SetBlock(localPos, block);
         }
 
         private Vector3Int GetBlockLocalPos(Vector3Int absPos) {

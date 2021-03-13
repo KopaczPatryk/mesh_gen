@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Assets.Scripts.WorldGen.MeshGenerators {
     public class PartialChunkMeshGenerator : IChunkMeshGenerator {
-        //generator
         private Vector3[] verts;
         private Vector2[] uvs;
         private int[] tris;
@@ -15,15 +14,15 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
         private int uCount = 0;
         private int tCount = 0;
 
-        public RawMesh GenerateMesh(Chunk mapChunk) {
-            BaseBlock[,,] map = mapChunk.Map;
+        public RawMesh GenerateMesh(Chunk chunk) {
+            BaseBlock[,,] blocks = chunk.Blocks;
 
             int vertCount = 0;
             int trianglesCount = 0;
-            for (int z = 0; z < mapChunk.zSize; z++) {
-                for (int y = 0; y < mapChunk.ySize; y++) {
-                    for (int x = 0; x < mapChunk.xSize; x++) {
-                        BaseBlock block = map[x, y, z];
+            for (int z = 0; z < chunk.zSize; z++) {
+                for (int y = 0; y < chunk.ySize; y++) {
+                    for (int x = 0; x < chunk.xSize; x++) {
+                        BaseBlock block = blocks[x, y, z];
 
                         if (block.CanBeRendered) {
                             vertCount += block.GetDrawData().Vertices.Length;
@@ -43,12 +42,12 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
             List<Vector3Int> renderLayer = new List<Vector3Int>();
 
             //find visible blocks
-            int chunkSize = mapChunk.ChunkSize;
-            for (int z = 0; z < mapChunk.zSize; z++) {
-                for (int y = 0; y < mapChunk.ySize; y++) {
-                    for (int x = 0; x < mapChunk.xSize; x++) {
+            int chunkSize = chunk.ChunkSize;
+            for (int z = 0; z < chunk.zSize; z++) {
+                for (int y = 0; y < chunk.ySize; y++) {
+                    for (int x = 0; x < chunk.xSize; x++) {
                         //Vector3Int pos = new Vector3Int(x, y, z);
-                        if (mapChunk.IsBlockVisible(new Vector3Int(x, y, z))) {
+                        if (chunk.IsBlockVisible(new Vector3Int(x, y, z))) {
                             renderLayer.Add(new Vector3Int(x, y, z));
                         }
 
@@ -80,10 +79,10 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 int x = renderLayer[a].x;
                 int y = renderLayer[a].y;
                 int z = renderLayer[a].z;
-                BaseBlock block = map[x, y, z];
+                BaseBlock block = blocks[x, y, z];
                 //front
                 try {
-                    if (map[x, y, z - 1].Transparent) {
+                    if (blocks[x, y, z - 1].Transparent) {
                         AppendFace(block, Face.Front, x, y, z);
                     }
                 } catch (IndexOutOfRangeException) //assume neighbor transparent
@@ -92,7 +91,7 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 }
                 //back
                 try {
-                    if (map[x, y, z + 1].Transparent) {
+                    if (blocks[x, y, z + 1].Transparent) {
                         AppendFace(block, Face.Back, x, y, z);
                     }
                 } catch (IndexOutOfRangeException) {
@@ -101,7 +100,7 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 }
                 //left
                 try {
-                    if (map[x - 1, y, z].Transparent) {
+                    if (blocks[x - 1, y, z].Transparent) {
                         AppendFace(block, Face.Left, x, y, z);
                     }
                 } catch (IndexOutOfRangeException) {
@@ -110,7 +109,7 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 }
                 //right
                 try {
-                    if (map[x + 1, y, z].Transparent) {
+                    if (blocks[x + 1, y, z].Transparent) {
                         AppendFace(block, Face.Right, x, y, z);
                     }
                 } catch (IndexOutOfRangeException) {
@@ -119,7 +118,7 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 }
                 //top
                 try {
-                    if (map[x, y + 1, z].Transparent) {
+                    if (blocks[x, y + 1, z].Transparent) {
                         AppendFace(block, Face.Top, x, y, z);
                     }
                 } catch (IndexOutOfRangeException) {
@@ -128,7 +127,7 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 }
                 //bottom
                 try {
-                    if (map[x, y - 1, z].Transparent) {
+                    if (blocks[x, y - 1, z].Transparent) {
                         AppendFace(block, Face.Bottom, x, y, z);
                     }
                 } catch (IndexOutOfRangeException) {
@@ -144,8 +143,8 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                sw.ElapsedTicks,
                vertCount,
                trianglesCount,
-               mapChunk.Map.Length,
-               sw.ElapsedTicks / mapChunk.Map.Length
+               chunk.Blocks.Length,
+               sw.ElapsedTicks / chunk.Blocks.Length
             );
             vCount = 0;
             uCount = 0;

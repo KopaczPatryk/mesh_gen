@@ -8,7 +8,7 @@ public delegate void InteractionHandler(RaycastHit hit, InteractionType interact
 namespace Assets.Scripts.WorldGen {
     public class ChunkBehaviour : MonoBehaviour, IInteractable {
         public event InteractionHandler Interacted;
-        public Chunk MapChunk;
+        public Chunk Chunk;
         public PartialChunkMeshGenerator MeshGenerator;
 
         private MeshFilter meshFilter;
@@ -32,7 +32,7 @@ namespace Assets.Scripts.WorldGen {
         }
 
         public void RegenerateMesh() {
-            RawMesh rawMesh = MeshGenerator.GenerateMesh(MapChunk);
+            RawMesh rawMesh = MeshGenerator.GenerateMesh(Chunk);
             Mesh localmesh = meshFilter.mesh;
 
             localmesh.Clear();
@@ -44,23 +44,23 @@ namespace Assets.Scripts.WorldGen {
         }
 
         private IEnumerator DelBlocks() {
-            for (int i = 0; i < MapChunk.ChunkSize; i++) {
-                MapChunk.SetBlock(new Vector3Int(i, 7, 7), new Air());
+            for (int i = 0; i < Chunk.ChunkSize; i++) {
+                Chunk.SetBlock(new Vector3Int(i, 7, 7), new Air());
                 RegenerateMesh();
                 yield return new WaitForSeconds(1);
 
-                MapChunk.SetBlock(new Vector3Int(i, 7, 7), new Dirt());
+                Chunk.SetBlock(new Vector3Int(i, 7, 7), new Dirt());
                 RegenerateMesh();
                 yield return new WaitForSeconds(1);
             }
         }
 
         internal void test() {
-            MapChunk = new Chunk(8);
+            Chunk = new Chunk(8);
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
                     for (int z = 0; z < 8; z++) {
-                        MapChunk.SetBlock(new Vector3Int(x, y, z), new Air());
+                        Chunk.SetBlock(new Vector3Int(x, y, z), new Air());
                     }
                 }
             }

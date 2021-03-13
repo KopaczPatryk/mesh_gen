@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.WorldGen {
     public class Chunk {
-        public BaseBlock[,,] Map { get; private set; }
+        public BaseBlock[,,] Blocks { get; private set; }
         public int xSize { get; private set; } = 4;
         public int ySize { get; private set; } = 4;
         public int zSize { get; private set; } = 4;
@@ -24,19 +24,19 @@ namespace Assets.Scripts.WorldGen {
 
         public Chunk(int chunkSize) {
             ChunkSize = chunkSize;
-            Map = new BaseBlock[xSize, ySize, zSize];
+            Blocks = new BaseBlock[xSize, ySize, zSize];
         }
 
         public BaseBlock GetBlock(Vector3Int pos) {
             if (IsInChunkBounds(pos)) {
-                return Map[pos.x, pos.y, pos.z];
+                return Blocks[pos.x, pos.y, pos.z];
             } else {
                 throw new Exception("Position out of chunk bounds: " + pos.ToString());
             }
         }
 
         public void SetBlock(Vector3Int pos, BaseBlock block) {
-            Map[pos.x, pos.y, pos.z] = block;
+            Blocks[pos.x, pos.y, pos.z] = block;
         }
 
         public bool IsBlockVisible(Vector3Int vec) {
@@ -56,12 +56,12 @@ namespace Assets.Scripts.WorldGen {
                 !IsInChunkBounds(front) ||
                 !IsInChunkBounds(back)) {
                     return true;
-                } else if (Map[right.x, right.y, right.z].Transparent ||
-                              Map[left.x, left.y, left.z].Transparent ||
-                              Map[above.x, above.y, above.z].Transparent ||
-                              Map[below.x, below.y, below.z].Transparent ||
-                              Map[front.x, front.y, front.z].Transparent ||
-                              Map[back.x, back.y, back.z].Transparent) {
+                } else if (Blocks[right.x, right.y, right.z].Transparent ||
+                              Blocks[left.x, left.y, left.z].Transparent ||
+                              Blocks[above.x, above.y, above.z].Transparent ||
+                              Blocks[below.x, below.y, below.z].Transparent ||
+                              Blocks[front.x, front.y, front.z].Transparent ||
+                              Blocks[back.x, back.y, back.z].Transparent) {
                     return true;
                 } else {
                     return false;
