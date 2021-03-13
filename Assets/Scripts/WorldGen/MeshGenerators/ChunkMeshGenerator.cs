@@ -140,13 +140,14 @@ namespace MeshGen {
             }
 
             sw.Stop();
+
             UnityEngine.Debug.LogFormat(
-               "Generation took: {0}ms for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
-               sw.ElapsedMilliseconds,
+               "Generation took: {0}us for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
+               sw.ElapsedTicks,
                vertCount,
                trianglesCount,
                mapChunk.GetBlockArray().Length,
-               sw.ElapsedTicks * 1000000 / Stopwatch.Frequency / mapChunk.GetBlockArray().Length
+               sw.ElapsedTicks / mapChunk.GetBlockArray().Length
             );
             vCount = 0;
             uCount = 0;
