@@ -2,41 +2,35 @@
 
 namespace MeshGen.WorldGen {
     public abstract class BaseBlock : System.Object {
-        protected RawMesh mesh = new RawMesh();
-        protected const float scale = 1;
+        // protected RawMesh mesh = new RawMesh();
+        private const float scale = 1;
 
         [SerializeField]
-        public int VertexCount { get; protected set; }
+        public int VertexCount { get; private set; }
 
         [SerializeField]
-        public int UvCount { get; protected set; }
+        public int UvCount { get; private set; }
 
         [SerializeField]
-        public int Indices { get; protected set; }
-        protected bool Built = false;
-
+        public int Indices { get; private set; }
+        public bool CanBeRendered => Sides > 0;
         public bool Transparent { get; private set; }
-        //public abstract void PopulateMeshData();
         public abstract RawMesh GetDrawData();
-
         public int Sides { get; private set; } = 0;
 
-
         protected BaseBlock(
-                            bool built,
                             bool transparent,
-                            int uvCount = 24,
-                            int sides = 6,
-                            int vertexCount = 24,
-                            int indices = 36
+                            int sides,
+                            int uvCount,
+                            int vertexCount,
+                            int indices
                             ) {
 
-            VertexCount = vertexCount;
-            UvCount = uvCount;
-            Indices = indices;
-            Built = built;
             Transparent = transparent;
             Sides = sides;
+            UvCount = uvCount;
+            VertexCount = vertexCount;
+            Indices = indices;
         }
     }
 }

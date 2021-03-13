@@ -69,11 +69,11 @@ public class WorldMap : MonoBehaviour {
                 //lastClickedGizmo.transform.position = GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside) + Vector3.one / 2;
                 //lastClickedGizmo.transform.localScale = Vector3.one * 1.1f;
 
-                print("hit pos" + hitPosInside);
-                print("chunkpos: " + GetChunkPos(hitPosInside));
-                print("chunkpos multiplied: " + GetChunkPos(hitPosInside) * ChunkSize);
-                print("block localpos: " + GetBlockLocalPos(hitPosInside));
-                print("summed: " + (GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside)));
+                // print("hit pos" + hitPosInside);
+                // print("chunkpos: " + GetChunkPos(hitPosInside));
+                // print("chunkpos multiplied: " + GetChunkPos(hitPosInside) * ChunkSize);
+                // print("block localpos: " + GetBlockLocalPos(hitPosInside));
+                // print("summed: " + (GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside)));
 
                 SetBlock(hitPosInside, new MeshGen.WorldGen.Space());
                 //GetChunkBehaviour(chunkpos).test();

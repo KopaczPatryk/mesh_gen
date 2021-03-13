@@ -26,8 +26,10 @@ namespace MeshGen {
                     for (int x = 0; x < mapChunk.Xsize; x++) {
                         BaseBlock block = mapChunk.GetBlockArray()[x, y, z];
 
-                        vertCount += block.GetDrawData().Vertices.Length;
-                        trianglesCount += block.GetDrawData().Triangles.Length;
+                        if (block.CanBeRendered) {
+                            vertCount += block.GetDrawData().Vertices.Length;
+                            trianglesCount += block.GetDrawData().Triangles.Length;
+                        }
                     }
                 }
             }
@@ -160,7 +162,7 @@ namespace MeshGen {
             };
         }
         private void AppendFace(BaseBlock block, Face face, int xpos, int ypos, int zpos) {
-            if (block.Sides == 0) {
+            if (!block.CanBeRendered) {
                 return;
             }
             int faceOrder = face.GetHashCode();

@@ -3,14 +3,14 @@ using UnityEngine;
 namespace MeshGen.WorldGen {
     public class Space : BaseBlock {
 
-        public Space() : base(built: true,
-                              transparent: true,
-                              uvCount: 0,
+        public Space() : base(transparent: true,
                               sides: 0,
-                              vertexCount: 0) { }
+                              uvCount: 0,
+                              vertexCount: 0,
+                              indices: 0) { }
 
         public override RawMesh GetDrawData() {
-            return new RawMesh();
+            return null;
         }
     }
 }
