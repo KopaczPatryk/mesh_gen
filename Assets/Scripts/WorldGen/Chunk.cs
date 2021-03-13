@@ -82,6 +82,21 @@ namespace Assets.Scripts.WorldGen {
                 return true;
             }
         }
+
+        public bool IsInsideOfChunk(Vector3Int vec, int shellThickness = 1) {
+            if (vec.x < shellThickness || vec.y < shellThickness || vec.z < shellThickness || vec.x >= chunkSize - shellThickness || vec.y >= chunkSize - shellThickness || vec.z >= chunkSize - shellThickness) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        public bool IsInsideOfChunk(int x, int y, int z, int shellThickness = 1) {
+            if (x < shellThickness || y < shellThickness || z < shellThickness || x >= chunkSize - shellThickness || y >= chunkSize - shellThickness || z >= chunkSize - shellThickness) {
+                return false;
+            } else {
+                return true;
+            }
+        }
         public bool IsAtChunkBoundary(Vector3Int vec) {
             if (vec.x % ChunkSize == 0 && vec.y % ChunkSize == 0 && vec.z % ChunkSize == 0) {
                 return true;

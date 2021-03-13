@@ -77,35 +77,56 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                 int y = visibleBlockPositions[a].y;
                 int z = visibleBlockPositions[a].z;
                 BaseBlock block = blocks[x, y, z];
-                //front
-                if (!chunk.IsInChunkBounds(x, y, z - 1) ||
-                     blocks[x, y, z - 1].Transparent) {
-                    AppendFace(mesh, block, Face.Front, x, y, z);
-                }
-                //back
-                if (!chunk.IsInChunkBounds(x, y, z + 1) ||
-                    blocks[x, y, z + 1].Transparent) {
-                    AppendFace(mesh, block, Face.Back, x, y, z);
-                }
-                //left
-                if (!chunk.IsInChunkBounds(x - 1, y, z) ||
-                    blocks[x - 1, y, z].Transparent) {
-                    AppendFace(mesh, block, Face.Left, x, y, z);
-                }
-                //right
-                if (!chunk.IsInChunkBounds(x + 1, y, z) ||
-                    blocks[x + 1, y, z].Transparent) {
-                    AppendFace(mesh, block, Face.Right, x, y, z);
-                }
-                //top
-                if (!chunk.IsInChunkBounds(x, y + 1, z) ||
-                    blocks[x, y + 1, z].Transparent) {
-                    AppendFace(mesh, block, Face.Top, x, y, z);
-                }
-                //bottom
-                if (!chunk.IsInChunkBounds(x, y - 1, z) ||
-                    blocks[x, y - 1, z].Transparent) {
-                    AppendFace(mesh, block, Face.Bottom, x, y, z);
+                if (chunk.IsInsideOfChunk(x, y, z)) {
+                    //front
+                    if (blocks[x, y, z - 1].Transparent) {
+                        AppendFace(mesh, block, Face.Front, x, y, z);
+                    }
+                    //back
+                    if (blocks[x, y, z + 1].Transparent) {
+                        AppendFace(mesh, block, Face.Back, x, y, z);
+                    }
+                    //left
+                    if (blocks[x - 1, y, z].Transparent) {
+                        AppendFace(mesh, block, Face.Left, x, y, z);
+                    }
+                    //right
+                    if (blocks[x + 1, y, z].Transparent) {
+                        AppendFace(mesh, block, Face.Right, x, y, z);
+                    }
+                    //top
+                    if (blocks[x, y + 1, z].Transparent) {
+                        AppendFace(mesh, block, Face.Top, x, y, z);
+                    }
+                    //bottom
+                    if (blocks[x, y - 1, z].Transparent) {
+                        AppendFace(mesh, block, Face.Bottom, x, y, z);
+                    }
+                } else {
+                    //front
+                    if (!chunk.IsInChunkBounds(x, y, z - 1) || blocks[x, y, z - 1].Transparent) {
+                        AppendFace(mesh, block, Face.Front, x, y, z);
+                    }
+                    //back
+                    if (!chunk.IsInChunkBounds(x, y, z + 1) || blocks[x, y, z + 1].Transparent) {
+                        AppendFace(mesh, block, Face.Back, x, y, z);
+                    }
+                    //left
+                    if (!chunk.IsInChunkBounds(x - 1, y, z) || blocks[x - 1, y, z].Transparent) {
+                        AppendFace(mesh, block, Face.Left, x, y, z);
+                    }
+                    //right
+                    if (!chunk.IsInChunkBounds(x + 1, y, z) || blocks[x + 1, y, z].Transparent) {
+                        AppendFace(mesh, block, Face.Right, x, y, z);
+                    }
+                    //top
+                    if (!chunk.IsInChunkBounds(x, y + 1, z) || blocks[x, y + 1, z].Transparent) {
+                        AppendFace(mesh, block, Face.Top, x, y, z);
+                    }
+                    //bottom
+                    if (!chunk.IsInChunkBounds(x, y - 1, z) || blocks[x, y - 1, z].Transparent) {
+                        AppendFace(mesh, block, Face.Bottom, x, y, z);
+                    }
                 }
             }
 

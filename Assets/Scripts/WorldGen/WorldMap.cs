@@ -30,7 +30,7 @@ namespace Assets.Scripts.WorldGen {
                     }
                 }
             }
-            //LoadChunk(new Vector3Int(0, 1, -1));
+            // LoadChunk(new Vector3Int(0, 1, -1));
         }
 
         private void LoadChunk(Vector3Int pos) {
