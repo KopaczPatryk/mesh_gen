@@ -141,11 +141,11 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
 
             UnityEngine.Debug.LogFormat(
                "Generation took: {0}us for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
-               sw.ElapsedTicks,
+               sw.ElapsedTicks / 10d,
                mesh.Vertices.Length,
                mesh.Triangles.Length,
                chunk.Blocks.Length,
-               sw.ElapsedTicks / chunk.Blocks.Length
+               (sw.ElapsedTicks / 10d) / chunk.Blocks.Length
             );
 
             return mesh;
