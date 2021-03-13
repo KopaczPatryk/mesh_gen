@@ -69,10 +69,6 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
         public RawMesh GenerateMesh(Chunk chunk) {
             BaseBlock[,,] blocks = chunk.Blocks;
 
-            //render visible blocks
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             List<Vector3Int> visibleBlockPositions = terrainCuller.cull(chunk);
             var mesh = initRawMesh(chunk);
             //process visible faces
@@ -112,17 +108,6 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
                     AppendFace(mesh, block, Face.Bottom, x, y, z);
                 }
             }
-
-            sw.Stop();
-
-            UnityEngine.Debug.LogFormat(
-               "Generation took: {0}us for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
-               sw.ElapsedTicks / 10d,
-               mesh.Vertices.Length,
-               mesh.Triangles.Length,
-               chunk.Blocks.Length,
-               (sw.ElapsedTicks / 10d) / chunk.Blocks.Length
-            );
 
             return mesh;
         }
