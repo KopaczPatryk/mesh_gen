@@ -3,7 +3,7 @@ using Assets.Scripts.TreeGen.Parts;
 using UnityEngine;
 
 namespace Assets.Scripts.TreeGen {
-    public class TreeMeshGenenerator {
+    public class TreeMeshGenerator {
         public RawListMesh GenerateTree(Part tree) {
             RawListMesh mesh = new RawListMesh();
 

@@ -53,7 +53,7 @@ namespace Assets.Scripts.TreeGen.SchemaGenerators {
         }
 
         protected float randBetween(float min, float max) {
-            return (float) (min + (Random.NextDouble() * max - min));
+            return (float)(min + (Random.NextDouble() * max - min));
         }
 
         protected int randBetween(int min, int max) {
@@ -62,9 +62,9 @@ namespace Assets.Scripts.TreeGen.SchemaGenerators {
 
         protected Vector3 GetCirclePoint(float ang, float radius = 5) {
             Vector3 vector = new Vector3(
-                (float) Math.Cos(Mathf.Deg2Rad * ang) * radius,
+                (float)Math.Cos(Mathf.Deg2Rad * ang) * radius,
                 0,
-                (float) Math.Sin(Mathf.Deg2Rad * ang) * radius
+                (float)Math.Sin(Mathf.Deg2Rad * ang) * radius
             );
             // Debug.Log(vector);
             return vector;

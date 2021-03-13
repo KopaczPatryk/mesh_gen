@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.TreeGen.Parts;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.TreeGen {
@@ -14,7 +13,7 @@ namespace Assets.Scripts.TreeGen {
             MeshFilter meshFilter = GetComponent<MeshFilter>();
             Mesh localmesh = meshFilter.mesh;
 
-            var treeGen = new TreeMeshGenenerator();
+            var treeGen = new TreeMeshGenerator();
             var rawMesh = treeGen.GenerateTree(body);
 
             localmesh.Clear();

@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Assets.Scripts.Helpers;
+using UnityEngine;
 
 namespace Assets.Scripts.TreeGen.Parts {
     public class Part : IEnumerable<Part> {
