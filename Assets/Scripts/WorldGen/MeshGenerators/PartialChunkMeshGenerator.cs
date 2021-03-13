@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Assets.Scripts.WorldGen.Blocks;
+using Assets.Scripts.WorldGen.TerrainCullers;
 using UnityEngine;
 
 namespace Assets.Scripts.WorldGen.MeshGenerators {
     public class PartialChunkMeshGenerator : IChunkMeshGenerator {
+        private ITerrainCuller terrainCuller;
+
         private Vector3[] verts;
         private Vector2[] uvs;
         private int[] tris;
@@ -13,6 +16,10 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
         private int vCount = 0;
         private int uCount = 0;
         private int tCount = 0;
+
+        public PartialChunkMeshGenerator(ITerrainCuller terrainCuller) {
+            this.terrainCuller = terrainCuller;
+        }
 
         public RawMesh GenerateMesh(Chunk chunk) {
             BaseBlock[,,] blocks = chunk.Blocks;
@@ -39,46 +46,13 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            List<Vector3Int> renderLayer = new List<Vector3Int>();
+            List<Vector3Int> visibleBlockPositions = terrainCuller.cull(chunk);
 
-            //find visible blocks
-            int chunkSize = chunk.ChunkSize;
-            for (int z = 0; z < chunk.zSize; z++) {
-                for (int y = 0; y < chunk.ySize; y++) {
-                    for (int x = 0; x < chunk.xSize; x++) {
-                        //Vector3Int pos = new Vector3Int(x, y, z);
-                        if (chunk.IsBlockVisible(new Vector3Int(x, y, z))) {
-                            renderLayer.Add(new Vector3Int(x, y, z));
-                        }
-
-                        //try
-                        //{
-                        //    //UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
-                        //    if (map[pos.x + 1, pos.y, pos.z].Transparent ||
-                        //        map[pos.x - 1, pos.y, pos.z].Transparent ||
-                        //        map[pos.x, pos.y + 1, pos.z].Transparent ||
-                        //        map[pos.x, pos.y - 1, pos.z].Transparent ||
-                        //        map[pos.x, pos.y, pos.z + 1].Transparent ||
-                        //        map[pos.x, pos.y, pos.z - 1].Transparent
-                        //    )
-                        //    {
-                        //        //UnityEngine.Debug.LogFormat("in if {0} {1} {2}", x,y,z);
-                        //        renderLayer.Add(new Vector3Int(x, y, z));
-                        //    }
-                        //}
-                        //catch (IndexOutOfRangeException) //assume neighboring chunks are all transparent
-                        //{
-                        //    renderLayer.Add(new Vector3Int(x, y, z));
-                        //    //print(e.Message);
-                        //}
-                    }
-                }
-            }
             //process visible faces
-            for (int a = 0; a < renderLayer.Count; a++) {
-                int x = renderLayer[a].x;
-                int y = renderLayer[a].y;
-                int z = renderLayer[a].z;
+            for (int a = 0; a < visibleBlockPositions.Count; a++) {
+                int x = visibleBlockPositions[a].x;
+                int y = visibleBlockPositions[a].y;
+                int z = visibleBlockPositions[a].z;
                 BaseBlock block = blocks[x, y, z];
                 //front
                 try {

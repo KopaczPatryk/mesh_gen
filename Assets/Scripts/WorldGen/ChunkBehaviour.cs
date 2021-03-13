@@ -21,7 +21,7 @@ namespace Assets.Scripts.WorldGen {
             }
         }
         void Awake() {
-            MeshGenerator = new PartialChunkMeshGenerator();
+            MeshGenerator = new PartialChunkMeshGenerator(terrainCuller: new TransparencyCuller());
             MeshCollider = GetComponent<MeshCollider>();
             meshFilter = GetComponent<MeshFilter>();
         }
