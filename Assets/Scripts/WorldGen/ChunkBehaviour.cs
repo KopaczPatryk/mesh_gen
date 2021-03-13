@@ -17,17 +17,13 @@ public class ChunkBehaviour : MonoBehaviour, IInteractable {
     private MeshFilter meshFilter;
     private MeshCollider MeshCollider;
 
-    public void Interact(RaycastHit hitInfo, InteractionType interaction)
-    {
-        if (Interacted != null)
-        {
+    public void Interact(RaycastHit hitInfo, InteractionType interaction) {
+        if (Interacted != null) {
             //Debug.Log("interacted with chunk " + hitInfo.point);
-
             Interacted(hitInfo, interaction);
         }
     }
-    void Awake()
-    {
+    void Awake() {
         MeshGenerator = new PartialChunkMeshGenerator();
         MeshCollider = GetComponent<MeshCollider>();
         meshFilter = GetComponent<MeshFilter>();
@@ -38,8 +34,7 @@ public class ChunkBehaviour : MonoBehaviour, IInteractable {
         //StartCoroutine(editor);
     }
 
-    public void RegenerateMesh()
-    {
+    public void RegenerateMesh() {
         RawMesh rawMesh = MeshGenerator.GenerateMesh(MapChunk);
         Mesh localmesh = meshFilter.mesh;
 
@@ -51,10 +46,8 @@ public class ChunkBehaviour : MonoBehaviour, IInteractable {
         MeshCollider.sharedMesh = localmesh;
     }
 
-    private IEnumerator DelBlocks()
-    {
-        for (int i = 0; i < MapChunk.ChunkSize; i++)
-        {
+    private IEnumerator DelBlocks() {
+        for (int i = 0; i < MapChunk.ChunkSize; i++) {
             MapChunk.SetBlock(new Vector3Int(i, 7, 7), new MeshGen.WorldGen.Space());
             RegenerateMesh();
             yield return new WaitForSeconds(1);
@@ -65,15 +58,11 @@ public class ChunkBehaviour : MonoBehaviour, IInteractable {
         }
     }
 
-    internal void test()
-    {
+    internal void test() {
         MapChunk = new Chunk(8);
-        for (int x = 0; x < 8; x++)
-        {
-            for (int y = 0; y < 8; y++)
-            {
-                for (int z = 0; z < 8; z++)
-                {
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                for (int z = 0; z < 8; z++) {
                     MapChunk.SetBlock(new Vector3Int(x, y, z), new MeshGen.WorldGen.Space());
                 }
             }
