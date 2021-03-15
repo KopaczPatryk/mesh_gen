@@ -15,27 +15,6 @@ public class TransparencyCuller : ITerrainCuller {
                     if (chunk.IsBlockVisible(new Vector3Int(x, y, z))) {
                         culled.Add(new Vector3Int(x, y, z));
                     }
-
-                    //try
-                    //{
-                    //    //UnityEngine.Debug.LogFormat("pre if {0} {1} {2}", x,y,z);
-                    //    if (map[pos.x + 1, pos.y, pos.z].Transparent ||
-                    //        map[pos.x - 1, pos.y, pos.z].Transparent ||
-                    //        map[pos.x, pos.y + 1, pos.z].Transparent ||
-                    //        map[pos.x, pos.y - 1, pos.z].Transparent ||
-                    //        map[pos.x, pos.y, pos.z + 1].Transparent ||
-                    //        map[pos.x, pos.y, pos.z - 1].Transparent
-                    //    )
-                    //    {
-                    //        //UnityEngine.Debug.LogFormat("in if {0} {1} {2}", x,y,z);
-                    //        renderLayer.Add(new Vector3Int(x, y, z));
-                    //    }
-                    //}
-                    //catch (IndexOutOfRangeException) //assume neighboring chunks are all transparent
-                    //{
-                    //    renderLayer.Add(new Vector3Int(x, y, z));
-                    //    //print(e.Message);
-                    //}
                 }
             }
         }

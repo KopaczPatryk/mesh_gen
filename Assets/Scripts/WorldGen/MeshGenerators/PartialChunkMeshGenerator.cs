@@ -70,6 +70,7 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
             BaseBlock[,,] blocks = chunk.Blocks;
 
             List<Vector3Int> visibleBlockPositions = terrainCuller.cull(chunk);
+            
             var mesh = initRawMesh(chunk);
             //process visible faces
             for (int a = 0; a < visibleBlockPositions.Count; a++) {
