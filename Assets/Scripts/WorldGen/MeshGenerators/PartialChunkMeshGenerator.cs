@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Assets.Scripts.WorldGen.Blocks;
 using Assets.Scripts.WorldGen.TerrainCullers;
 using UnityEngine;
@@ -17,9 +15,9 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
 
             int vertCount = 0;
             int trianglesCount = 0;
-            for (int z = 0; z < chunk.zSize; z++) {
-                for (int y = 0; y < chunk.ySize; y++) {
-                    for (int x = 0; x < chunk.xSize; x++) {
+            for (int z = 0; z < chunk.ChunkSize; z++) {
+                for (int y = 0; y < chunk.ChunkSize; y++) {
+                    for (int x = 0; x < chunk.ChunkSize; x++) {
                         BaseBlock block = blocks[x, y, z];
 
                         if (block.CanBeRendered) {
@@ -70,7 +68,7 @@ namespace Assets.Scripts.WorldGen.MeshGenerators {
             BaseBlock[,,] blocks = chunk.Blocks;
 
             List<Vector3Int> visibleBlockPositions = terrainCuller.cull(chunk);
-            
+
             var mesh = initRawMesh(chunk);
             //process visible faces
             for (int a = 0; a < visibleBlockPositions.Count; a++) {

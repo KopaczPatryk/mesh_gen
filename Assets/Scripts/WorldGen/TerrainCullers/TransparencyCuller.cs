@@ -8,9 +8,9 @@ public class TransparencyCuller : ITerrainCuller {
         List<Vector3Int> culled = new List<Vector3Int>();
 
         int chunkSize = chunk.ChunkSize;
-        for (int z = 0; z < chunk.zSize; z++) {
-            for (int y = 0; y < chunk.ySize; y++) {
-                for (int x = 0; x < chunk.xSize; x++) {
+        for (int z = 0; z < chunk.ChunkSize; z++) {
+            for (int y = 0; y < chunk.ChunkSize; y++) {
+                for (int x = 0; x < chunk.ChunkSize; x++) {
                     //Vector3Int pos = new Vector3Int(x, y, z);
                     if (chunk.IsBlockVisible(new Vector3Int(x, y, z))) {
                         culled.Add(new Vector3Int(x, y, z));

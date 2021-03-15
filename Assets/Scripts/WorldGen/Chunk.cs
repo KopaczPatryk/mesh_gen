@@ -6,25 +6,12 @@ using UnityEngine;
 namespace Assets.Scripts.WorldGen {
     public class Chunk {
         public BaseBlock[,,] Blocks { get; private set; }
-        public int xSize { get; private set; } = 4;
-        public int ySize { get; private set; } = 4;
-        public int zSize { get; private set; } = 4;
-        private int chunkSize = 13;
-        public int ChunkSize {
-            get {
-                return chunkSize;
-            }
-            set {
-                xSize = value;
-                ySize = value;
-                zSize = value;
-                chunkSize = value;
-            }
-        }
+
+        public int ChunkSize { get; private set; }
 
         public Chunk(int chunkSize) {
-            ChunkSize = chunkSize;
-            Blocks = new BaseBlock[xSize, ySize, zSize];
+            this.ChunkSize = chunkSize;
+            this.Blocks = new BaseBlock[ChunkSize, ChunkSize, ChunkSize];
         }
 
         public BaseBlock GetBlock(Vector3Int pos) {
@@ -69,14 +56,14 @@ namespace Assets.Scripts.WorldGen {
             }
         }
         public bool IsInChunkBounds(Vector3Int vec) {
-            if (vec.x < 0 || vec.y < 0 || vec.z < 0 || vec.x >= chunkSize || vec.y >= chunkSize || vec.z >= chunkSize) {
+            if (vec.x < 0 || vec.y < 0 || vec.z < 0 || vec.x >= ChunkSize || vec.y >= ChunkSize || vec.z >= ChunkSize) {
                 return false;
             } else {
                 return true;
             }
         }
         public bool IsInChunkBounds(int x, int y, int z) {
-            if (x < 0 || y < 0 || z < 0 || x >= chunkSize || y >= chunkSize || z >= chunkSize) {
+            if (x < 0 || y < 0 || z < 0 || x >= ChunkSize || y >= ChunkSize || z >= ChunkSize) {
                 return false;
             } else {
                 return true;
@@ -84,14 +71,14 @@ namespace Assets.Scripts.WorldGen {
         }
 
         public bool IsInsideOfChunk(Vector3Int vec, int shellThickness = 1) {
-            if (vec.x < shellThickness || vec.y < shellThickness || vec.z < shellThickness || vec.x >= chunkSize - shellThickness || vec.y >= chunkSize - shellThickness || vec.z >= chunkSize - shellThickness) {
+            if (vec.x < shellThickness || vec.y < shellThickness || vec.z < shellThickness || vec.x >= ChunkSize - shellThickness || vec.y >= ChunkSize - shellThickness || vec.z >= ChunkSize - shellThickness) {
                 return false;
             } else {
                 return true;
             }
         }
         public bool IsInsideOfChunk(int x, int y, int z, int shellThickness = 1) {
-            if (x < shellThickness || y < shellThickness || z < shellThickness || x >= chunkSize - shellThickness || y >= chunkSize - shellThickness || z >= chunkSize - shellThickness) {
+            if (x < shellThickness || y < shellThickness || z < shellThickness || x >= ChunkSize - shellThickness || y >= ChunkSize - shellThickness || z >= ChunkSize - shellThickness) {
                 return false;
             } else {
                 return true;

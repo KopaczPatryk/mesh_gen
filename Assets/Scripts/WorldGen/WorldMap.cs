@@ -10,14 +10,13 @@ namespace Assets.Scripts.WorldGen {
     public class WorldMap : MonoBehaviour {
         public GameObject ChunkPrefab;
 
-        IMapProvider mainMap;
+        IMapProvider mapProvider;
         public const int ChunkSize = 8;
         public Dictionary<Vector3Int, Chunk> Chunks { get; set; }
         public Dictionary<Vector3Int, ChunkBehaviour> LoadedChunkObjects { get; set; }
-        private GameObject lastClickedGizmo { get; set; }
 
         void Awake() {
-            mainMap = InstanceFactory.GetInstance().GetMapProvider();
+            mapProvider = InstanceFactory.GetInstance().GetMapProvider();
         }
 
         void Start() {
@@ -43,7 +42,7 @@ namespace Assets.Scripts.WorldGen {
                 Chunk tChunk = Chunks[pos];
                 chunkBehavior.Chunk = tChunk;
             } else {
-                chunkBehavior.Chunk = mainMap.GetChunk(pos, ChunkSize);
+                chunkBehavior.Chunk = mapProvider.GetChunk(pos, ChunkSize);
                 Chunks.Add(pos, chunkBehavior.Chunk);
                 go.name = pos.ToString();
                 LoadedChunkObjects.Add(pos, chunkBehavior);
@@ -57,26 +56,7 @@ namespace Assets.Scripts.WorldGen {
                     Vector3Int hitPosInside = new Vector3Int((int)Mathf.Floor(respos.x), (int)Mathf.Floor(respos.y), (int)Mathf.Floor(respos.z));
                     var chunkpos = GetChunkPos(hitPosInside);
 
-                    //var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    //obj.transform.position = respos;
-
-                    //if (lastClickedGizmo != null)
-                    //{
-                    //    Destroy(lastClickedGizmo);
-                    //}
-
-                    //lastClickedGizmo = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    //lastClickedGizmo.transform.position = GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside) + Vector3.one / 2;
-                    //lastClickedGizmo.transform.localScale = Vector3.one * 1.1f;
-
-                    // print("hit pos" + hitPosInside);
-                    // print("chunkpos: " + GetChunkPos(hitPosInside));
-                    // print("chunkpos multiplied: " + GetChunkPos(hitPosInside) * ChunkSize);
-                    // print("block localpos: " + GetBlockLocalPos(hitPosInside));
-                    // print("summed: " + (GetChunkPos(hitPosInside) * ChunkSize + GetBlockLocalPos(hitPosInside)));
-
                     SetBlock(hitPosInside, new Air());
-                    //GetChunkBehaviour(chunkpos).test();
                     GetChunkBehaviour(chunkpos).RegenerateMesh();
 
                     break;
@@ -85,7 +65,6 @@ namespace Assets.Scripts.WorldGen {
 
         private ChunkBehaviour GetChunkBehaviour(Vector3Int chunkPos) {
             //Debug.Log("szukam: " + GetChunkPos(chunkPos).ToString());
-            //return GameObject.Find(chunkPos.ToString()).GetComponent<ChunkBehaviour>();
             return LoadedChunkObjects[chunkPos];
         }
         public BaseBlock GetBlock(Vector3Int absPos) {
