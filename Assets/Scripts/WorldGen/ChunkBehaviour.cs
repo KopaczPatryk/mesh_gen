@@ -33,20 +33,20 @@ namespace Assets.Scripts.WorldGen {
         }
 
         public void RegenerateMesh() {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+            // Stopwatch sw = new Stopwatch();
+            // sw.Start();
             RawMesh rawMesh = MeshGenerator.GenerateMesh(Chunk);
-            sw.Stop();
+            // sw.Stop();
 
-            UnityEngine.Debug.LogFormat(
-               "{5} Generation took: {0}us for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
-               sw.ElapsedTicks / 10d,
-               rawMesh.Vertices.Length,
-               rawMesh.Triangles.Length,
-               Chunk.Blocks.Length,
-               (sw.ElapsedTicks / 10d) / Chunk.Blocks.Length,
-               name
-            );
+            // UnityEngine.Debug.LogFormat(
+            //    "{5} Generation took: {0}us for {1} verts and {2} triangles and {3} objects, taking avg {4}us per obj.",
+            //    sw.ElapsedTicks / 10d,
+            //    rawMesh.Vertices.Length,
+            //    rawMesh.Triangles.Length,
+            //    Chunk.Blocks.Length,
+            //    (sw.ElapsedTicks / 10d) / Chunk.Blocks.Length,
+            //    name
+            // );
             Mesh localmesh = meshFilter.mesh;
 
             localmesh.Clear();
