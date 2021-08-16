@@ -1,3 +1,5 @@
+using System;
+using Assets.Scripts.WorldGen.Blocks;
 using UnityEngine;
 
 public static class ChunkUtils {
@@ -36,6 +38,35 @@ public static class ChunkUtils {
             return true;
         } else {
             return false;
+        }
+    }
+    public static bool IsBlockVisible(Vector3Int vec, BaseBlock[,,] blocks, int chunkSize) {
+        Vector3Int right = new Vector3Int(vec.x + 1, vec.y, vec.z);
+        Vector3Int left = new Vector3Int(vec.x - 1, vec.y, vec.z);
+        Vector3Int above = new Vector3Int(vec.x, vec.y + 1, vec.z);
+        Vector3Int below = new Vector3Int(vec.x, vec.y - 1, vec.z);
+        Vector3Int front = new Vector3Int(vec.x, vec.y, vec.z + 1);
+        Vector3Int back = new Vector3Int(vec.x, vec.y, vec.z - 1);
+        if (!ChunkUtils.IsInChunkBounds(vec, chunkSize)) {
+            throw new Exception("Position out of chunk bounds: " + vec.ToString());
+        } else {
+            if (!ChunkUtils.IsInChunkBounds(right, chunkSize)
+                || !ChunkUtils.IsInChunkBounds(left, chunkSize)
+                || !ChunkUtils.IsInChunkBounds(above, chunkSize)
+                || !ChunkUtils.IsInChunkBounds(below, chunkSize)
+                || !ChunkUtils.IsInChunkBounds(front, chunkSize)
+                || !ChunkUtils.IsInChunkBounds(back, chunkSize)) {
+                return true;
+            } else if (blocks[right.x, right.y, right.z].Transparent ||
+                        blocks[left.x, left.y, left.z].Transparent ||
+                        blocks[above.x, above.y, above.z].Transparent ||
+                        blocks[below.x, below.y, below.z].Transparent ||
+                        blocks[front.x, front.y, front.z].Transparent ||
+                        blocks[back.x, back.y, back.z].Transparent) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }
