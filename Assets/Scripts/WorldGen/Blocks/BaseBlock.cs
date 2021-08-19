@@ -18,17 +18,19 @@ namespace Assets.Scripts.WorldGen.Blocks {
         public abstract RawMesh GetDrawData();
         public int Sides { get; private set; } = 0;
 
-        protected BaseBlock(bool transparent,
-                            int sides,
-                            int uvCount,
-                            int vertexCount,
-                            int indices) {
-
+        protected BaseBlock(
+                            bool transparent = false,
+                            bool built = false,
+                            int vertexCount = 24,
+                            int indices = 36,
+                            int uvCount = 24,
+                            int sides = 6
+                            ) {
             Transparent = transparent;
-            Sides = sides;
-            UvCount = uvCount;
             VertexCount = vertexCount;
             Indices = indices;
+            UvCount = uvCount;
+            Sides = sides;
         }
     }
 }

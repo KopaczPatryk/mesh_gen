@@ -4,11 +4,7 @@ namespace Assets.Scripts.WorldGen.Blocks {
     public class Dirt : BaseBlock {
         private static RawMesh prototype = new RawMesh();
         private static bool IsBuilt = false;
-        public Dirt() : base(transparent: true,
-                             sides: 6,
-                             uvCount: 24,
-                             vertexCount: 24,
-                             indices: 36) { }
+        public Dirt() : base(transparent: false, vertexCount: 24, indices: 36, uvCount: 24, sides: 6) { }
 
         public override RawMesh GetDrawData() {
             PopulateMeshData();
