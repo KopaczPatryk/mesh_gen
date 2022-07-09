@@ -5,7 +5,9 @@ using Assets.Scripts.Core.Interaction;
 using Assets.Scripts.WorldGen.Blocks;
 using Assets.Scripts.WorldGen.MeshGenerators;
 using UnityEngine;
+
 public delegate void InteractionHandler(RaycastHit hit, InteractionType interaction);
+
 namespace Assets.Scripts.WorldGen {
     public class ChunkBehaviour : MonoBehaviour, IInteractable {
         public event InteractionHandler Interacted;

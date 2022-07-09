@@ -1,10 +1,8 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
-namespace Core
-{
-    public class PlayerController : MonoBehaviour
-    {
+namespace Core {
+    public class PlayerController : MonoBehaviour {
         // Controls how the player moves, originally based on FPSWalker
         public float speed = 6.0f;
         public float jumpSpeed = 8.0f;
@@ -13,16 +11,13 @@ namespace Core
         private Vector3 moveDir = Vector3.zero;
         private bool grounded = false;
 
-        void FixedUpdate()
-        {
-            if (grounded)
-            {
+        void FixedUpdate() {
+            if (grounded) {
                 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
                 moveDir = Quaternion.AngleAxis(transform.localEulerAngles.y, Vector3.up) * moveDir;
                 moveDir *= speed;
 
-                if (Input.GetButton("Jump"))
-                {
+                if (Input.GetButton("Jump")) {
                     moveDir.y = jumpSpeed;
                 }
             }
@@ -30,8 +25,7 @@ namespace Core
             moveDir.y -= gravity * Time.deltaTime;
 
             CharacterController controller = GetComponent<CharacterController>();
-            if (controller.enabled != false)
-            {
+            if (controller.enabled != false) {
                 CollisionFlags flags = controller.Move(moveDir * Time.deltaTime);
                 grounded = (flags & CollisionFlags.CollidedBelow) != 0;
             }
