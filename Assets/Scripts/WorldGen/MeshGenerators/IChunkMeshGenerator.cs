@@ -1,7 +1,5 @@
-﻿namespace MeshGen
-{
-    public interface IChunkMeshGenerator
-    {
+﻿namespace Assets.Scripts.WorldGen.MeshGenerators {
+    public interface IChunkMeshGenerator {
         RawMesh GenerateMesh(Chunk chunkModel);
     }
 }

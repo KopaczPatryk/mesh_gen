@@ -42,6 +42,7 @@
     "**/*.meta": true,
     "**/*.prefab": true,
     "**/*.unity": true,
+    "Logs": true,
     "build/": true,
     "Build/": true,
     "Library/": true,
@@ -52,10 +53,5 @@
     "temp/": true,
     "Temp/": true
   },
-  "cSpell.words": [
-    "Behaviour",
-    "Mathf",
-    "tris",
-    "verts"
-  ]
+  "cSpell.words": ["Behaviour", "Mathf", "tris", "verts"]
 }

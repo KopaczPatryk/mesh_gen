@@ -1,5 +1,8 @@
-﻿using System;
+using System;
 using Assets.Scripts.TreeGen.SchemaGenerators;
+using System.Collections;
+using System.Collections.Generic;
+using Assets.Scripts.MapGen;
 using UnityEngine;
 
 public class InstanceFactory {
