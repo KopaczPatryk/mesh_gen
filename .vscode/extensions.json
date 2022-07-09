@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "uctakeoff.vscode-counter",
+        "pflannery.vscode-versionlens",
+        "ryanluker.vscode-coverage-gutters",
+        "streetsidesoftware.code-spell-checker",
+        "ms-dotnettools.csharp"
+    ]
+}
