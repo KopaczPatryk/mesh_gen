@@ -4,6 +4,8 @@
         "pflannery.vscode-versionlens",
         "ryanluker.vscode-coverage-gutters",
         "streetsidesoftware.code-spell-checker",
-        "ms-dotnettools.csharp"
+        "ms-dotnettools.csharp",
+        "gruntfuggly.todo-tree",
+        "vscode-icons-team.vscode-icons"
     ]
 }

@@ -53,5 +53,94 @@
     "temp/": true,
     "Temp/": true
   },
-  "cSpell.words": ["Behaviour", "Mathf", "tris", "verts"]
+  "cSpell.words": [
+    "Behaviour",
+    "Mathf",
+    "tris",
+    "verts"
+  ],
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.tabSize": 4
+  },
+  "editor.defaultFormatter": "ms-dotnettools.csharp",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.renderControlCharacters": true,
+  "editor.tabSize": 2,
+  "editor.quickSuggestionsDelay": 10,
+  "emmet.excludeLanguages": [
+    "markdown",
+    "javascriptreact"
+  ],
+  "explorer.confirmDragAndDrop": false,
+  "files.autoSave": "afterDelay",
+  "git.autofetch": true,
+  "markdown.preview.scrollEditorWithPreview": false,
+  "omnisharp.enableEditorConfigSupport": true,
+  "workbench.iconTheme": "vscode-icons",
+  "editor.fontSize": 14,
+  "cSpell.userWords": [
+    "ARGB",
+    "Averta",
+    "Covid",
+    "crashlytics",
+    "cupertino",
+    "darq",
+    "Extrathin",
+    "fromLTRB",
+    "geolocator",
+    "Jakub",
+    "jomson",
+    "kamil",
+    "Kopacz",
+    "lerp",
+    "LTRB",
+    "Lvls",
+    "mockito",
+    "Mult",
+    "nullsafety",
+    "objectbox",
+    "oura",
+    "Pooler",
+    "Resynced",
+    "Resyncing",
+    "RGBO",
+    "RNIE",
+    "Semibold",
+    "serializable",
+    "Svgs",
+    "timeago",
+    "tindercard",
+    "Unpair",
+    "vsync"
+  ],
+  "cSpell.enableFiletypes": [
+    "dart",
+  ],
+  "explorer.confirmDelete": false,
+  "omnisharp.organizeImportsOnFormat": true,
+  "omnisharp.enableImportCompletion": true,
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  "workbench.editorAssociations": {
+    "*.svg": "default"
+  },
+  "editor.minimap.enabled": false,
+  "VSCodeCounter.useGitignore": true,
+  "VSCodeCounter.exclude": [
+    "**/android",
+    "**/ios",
+    "**/assets"
+  ],
+  "editor.suggestSelection": "first",
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "cSpell.allowCompoundWords": true,
+  "workbench.colorTheme": "Default Dark+",
 }
