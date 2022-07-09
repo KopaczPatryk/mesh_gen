@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.TreeGen;
 using Assets.Scripts.TreeGen.Parts;
-using Unity.UNetWeaver;
 using UnityEngine;
 
 namespace Assets.Scripts.MeshGen {
