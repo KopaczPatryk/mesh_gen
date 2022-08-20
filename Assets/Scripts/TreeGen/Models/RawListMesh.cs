@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.TreeGen {
+namespace TreeGen {
     public class RawListMesh {
         public List<int> Triangles = new List<int>();
         public int TriCount = 0;

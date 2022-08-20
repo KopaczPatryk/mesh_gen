@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Diagnostics;
-using Assets.Scripts.Core;
-using Assets.Scripts.Core.Interaction;
 using Assets.Scripts.WorldGen.Blocks;
 using Assets.Scripts.WorldGen.MeshGenerators;
+using Interaction;
 using UnityEngine;
 
 public delegate void InteractionHandler(RaycastHit hit, InteractionType interaction);

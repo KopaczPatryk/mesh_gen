@@ -1,7 +1,6 @@
-﻿using Assets.Scripts.Core.Interaction;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.Core {
+namespace Interaction {
     internal interface IInteractable {
         void Interact(RaycastHit hitInfo, InteractionType interaction);
     }

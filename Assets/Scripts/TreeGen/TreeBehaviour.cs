@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.TreeGen.Parts;
+﻿using TreeGen;
 using UnityEngine;
 
-namespace Assets.Scripts.TreeGen {
+namespace TreeGen {
     public class TreeBehaviour : MonoBehaviour {
         public Part body { get; private set; }
         private InstanceFactory instanceFactory = InstanceFactory.GetInstance();

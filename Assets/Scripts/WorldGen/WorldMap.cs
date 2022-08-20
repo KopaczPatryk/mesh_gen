@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Core.Interaction;
 using Assets.Scripts.MapGen;
 using Assets.Scripts.WorldGen.Blocks;
+using Interaction;
 using UnityEngine;
 using static Assets.Scripts.Helpers.MathHelpers;
 

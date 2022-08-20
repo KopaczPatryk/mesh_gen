@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class SpawnTreeGrid : MonoBehaviour {
+public class SpawnObjectGridBehaviour : MonoBehaviour {
     public GameObject prefab;
     public int GridXSize = 5;
     public int GridYSize = 5;
@@ -13,6 +11,7 @@ public class SpawnTreeGrid : MonoBehaviour {
                 for (int y = 0; y < GridYSize; y++) {
                     var pos = new Vector3(x * GridSpacing, 0, y * GridSpacing);
                     Instantiate(prefab, pos, Quaternion.identity);
+                    Destroy(gameObject);
                 }
             }
         }

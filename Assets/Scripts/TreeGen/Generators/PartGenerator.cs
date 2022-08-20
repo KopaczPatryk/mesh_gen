@@ -1,8 +1,7 @@
 using System;
-using Assets.Scripts.TreeGen.Parts;
 using UnityEngine;
 
-namespace Assets.Scripts.TreeGen.SchemaGenerators {
+namespace TreeGen {
     public class PartGenerator {
         public System.Random Random { get; }
 

@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Helpers;
 using UnityEngine;
 
-namespace Assets.Scripts.TreeGen.Parts {
+namespace TreeGen {
     public class Part : IEnumerable<Part> {
         public Vector3 direction { get; set; } = Vector3.up;
         public float baseWidth = 0.2f;

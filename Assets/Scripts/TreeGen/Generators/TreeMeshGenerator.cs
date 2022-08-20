@@ -1,8 +1,6 @@
-﻿using Assets.Scripts.MeshGen;
-using Assets.Scripts.TreeGen.Parts;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.TreeGen {
+namespace TreeGen {
     public class TreeMeshGenerator {
         public RawListMesh GenerateTree(Part tree) {
             RawListMesh mesh = new RawListMesh();

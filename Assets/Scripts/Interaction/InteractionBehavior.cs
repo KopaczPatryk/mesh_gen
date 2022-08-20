@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Core.Interaction;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.Core {
+namespace Interaction {
     class InteractionBehavior : MonoBehaviour {
         void Update() {
             if (Input.GetMouseButton(0)) {

@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Assets.Scripts.MapGen;
-using Assets.Scripts.TreeGen.SchemaGenerators;
-using UnityEngine;
+using TreeGen;
 
 public class InstanceFactory {
     private static InstanceFactory instance;

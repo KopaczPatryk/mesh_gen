@@ -1,8 +1,6 @@
-﻿using Assets.Scripts.TreeGen;
-using Assets.Scripts.TreeGen.Parts;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.MeshGen {
+namespace TreeGen {
     public static class TreeMeshHelper {
         public static void AppendSegment(this RawListMesh mesh, Part segment, Vector3 basePos) {
             Vector3 targetPos = new Vector3();
