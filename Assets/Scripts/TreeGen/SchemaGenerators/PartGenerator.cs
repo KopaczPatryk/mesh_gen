@@ -59,15 +59,5 @@ namespace Assets.Scripts.TreeGen.SchemaGenerators {
         protected int randBetween(int min, int max) {
             return Random.Next(min, max);
         }
-
-        protected Vector3 GetCirclePoint(float ang, float radius = 5) {
-            Vector3 vector = new Vector3(
-                (float)Math.Cos(Mathf.Deg2Rad * ang) * radius,
-                0,
-                (float)Math.Sin(Mathf.Deg2Rad * ang) * radius
-            );
-            // Debug.Log(vector);
-            return vector;
-        }
     }
 }

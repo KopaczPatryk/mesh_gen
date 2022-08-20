@@ -21,22 +21,13 @@ namespace Assets.Scripts.TreeGen.Parts {
                             (float)rnd.RandomBetween(-2, 2)
                             );
         }
-        public Part(params Part[] segments) {
-            direction = new Vector3(
-                            (float)rnd.RandomBetween(-2, 2),
-                            (float)rnd.RandomBetween(1, 2),
-                            (float)rnd.RandomBetween(-2, 2)
-                            );
+        public Part(params Part[] segments) : this() {
             segments.ToList().ForEach(s => this.Append(s));
         }
 
-        IEnumerator<Part> IEnumerable<Part>.GetEnumerator() {
-            return children.GetEnumerator();
-        }
+        IEnumerator<Part> IEnumerable<Part>.GetEnumerator() => children.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            return children.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => children.GetEnumerator();
 
         internal void Append(Part part) {
             children.Add(part);
